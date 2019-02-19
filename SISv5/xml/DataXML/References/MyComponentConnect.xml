@@ -7,10 +7,10 @@
 	</Item>
 	<Item>
 		<Key>MessageType</Key>
-		<Value>Voting</Value>
+		<Value>Connect</Value>
 	</Item>
 	<Item>
 		<Key>id</Key>
-		<Value>AlertValue</Value>
+		<Value>WeirdValue</Value>
 	</Item>
 </Msg>

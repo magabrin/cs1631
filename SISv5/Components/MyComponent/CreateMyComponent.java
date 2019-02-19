@@ -62,6 +62,13 @@ public class CreateMyComponent
                 conn.putPair("Name", NAME);
                 encoder.sendMsg(conn);
 
+                KeyValueList active = new KeyValueList();
+                active.putPair("Scope", SCOPE);
+                active.putPair("MessageType", "Activate");
+				active.putPair("Role", "Basic");
+                active.putPair("Name", "registername");
+                encoder.sendMsg(active);
+
                 initRecord();
 
                 // KeyValueList for inward messages, see KeyValueList for details
@@ -111,7 +118,7 @@ public class CreateMyComponent
     private static void initRecord()
     {
         record.putPair("Scope", SCOPE);
-        record.putPair("MessageType", "Voting");
+        record.putPair("MessageType", "Register");
         record.putPair("Sender", NAME);
 
         // Receiver may be different for each message, so it doesn't make sense
@@ -143,15 +150,18 @@ public class CreateMyComponent
 
     private static void ProcessMsg(KeyValueList kvList) throws Exception
     {
+        System.out.println("ProcessMsg called!");
         String scope = kvList.getValue("Scope");
         if (!SCOPE.startsWith(scope))
         {
+            System.out.println("scope doesnt start with " + scope + " , quitting...");
             return;
         }
 
         String messageType = kvList.getValue("MessageType");
         if (!TYPES.contains(messageType))
         {
+            System.out.println("Type doesnt contain " + messageType + " , quitting...");
             return;
         }
 
@@ -161,6 +171,7 @@ public class CreateMyComponent
 
         String purpose = kvList.getValue("Purpose");
 
+        System.out.println("sender: " + sender + " reciever: "  + receiver + " purpose: " + purpose + " message type: " + messageType + " name: " + NAME);
         switch (messageType)
         {
         case "Confirm":
@@ -175,6 +186,7 @@ public class CreateMyComponent
                 switch (purpose)
                 {
                 case "Activate":
+                    System.out.println("case activate");
                     String incomingVote = kvList.getValue("id");
                     componentTask(incomingVote);
                     System.out.println("Algorithm Activated");
@@ -183,6 +195,7 @@ public class CreateMyComponent
                 case "Kill":
                     try
                     {
+                        System.out.println("case kill");
                         timer.cancel();
                     }
                     catch (Exception e)
@@ -204,6 +217,9 @@ public class CreateMyComponent
                     System.out.println("Algorithm Deactivated");
                     break;
                 }
+            } else{
+                System.out.println("reciever did not match name, do nothing");
+                System.out.println(receiver + " != " + NAME);
             }
             break;
         }
