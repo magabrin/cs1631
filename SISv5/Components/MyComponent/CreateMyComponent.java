@@ -62,12 +62,6 @@ public class CreateMyComponent
                 conn.putPair("Name", NAME);
                 encoder.sendMsg(conn);
 
-                KeyValueList active = new KeyValueList();
-                active.putPair("Scope", SCOPE);
-                active.putPair("MessageType", "Activate");
-				active.putPair("Role", "Basic");
-                active.putPair("Name", "registername");
-                encoder.sendMsg(active);
 
                 initRecord();
 
@@ -141,6 +135,24 @@ public class CreateMyComponent
         {   
             /** store data */
             System.out.println("In componentTask method, incomingVote = " + incomingVote);
+
+            KeyValueList active = new KeyValueList();
+            active.putPair("Scope", SCOPE);
+            active.putPair("MessageType", "Alert");
+            active.putPair("Role", "Basic");
+            active.putPair("Chris", "Hey");
+            active.putPair("Matt", "Boat");
+            active.putPair("Role", "Basic");
+            active.putPair("Name", "WeDidIt");
+            encoder.sendMsg(active);
+
+            KeyValueList conn = new KeyValueList();
+            conn.putPair("Scope", SCOPE);
+            conn.putPair("MessageType", "Connect");
+            conn.putPair("Role", "Basic");
+            conn.putPair("Name", NAME);
+            conn.putPair("ExtraData", "WedidIt");
+            encoder.sendMsg(conn);
         }
         catch (Exception e)
         {
