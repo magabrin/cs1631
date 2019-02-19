@@ -24,7 +24,7 @@ public class CreateMyComponent
     // message reader
     static MsgDecoder decoder;
     // scope of this component
-    private static final String SCOPE = "SIS.Scope1";
+    private static final String SCOPE = "SIS";
 	// name of this component
     private static final String NAME = "Vote";
     // messages types that can be handled by this component
@@ -220,6 +220,7 @@ public class CreateMyComponent
                 case "Deactivate":
                     try
                     {
+                        System.out.println("case deactivate");
                         timer.cancel();
                     }
                     catch (Exception e)
