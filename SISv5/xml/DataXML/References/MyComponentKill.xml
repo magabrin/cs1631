@@ -3,14 +3,22 @@
 <Msg>
 	<Item>
 		<Key>Scope</Key>
-		<Value>SIS.Scope1</Value>
+		<Value>SIS</Value>
 	</Item>
 	<Item>
 		<Key>MessageType</Key>
-		<Value>Kill</Value>
+		<Value>Setting</Value>
 	</Item>
 	<Item>
-		<Key>id</Key>
-		<Value>KillValue</Value>
+		<Key>Sender</Key>
+		<Value>SISServer</Value>
+	</Item>
+	<Item>
+		<Key>Receiver</Key>
+		<Value>Vote</Value>
+	</Item>
+	<Item>
+		<Key>Purpose</Key>
+		<Value>Kill</Value>
 	</Item>
 </Msg>
