@@ -10,14 +10,6 @@
 		<Value>Setting</Value>
 	</Item>
 	<Item>
-		<Key>Email</Key>
-		<Value>crk70@pitt.edu</Value>
-	</Item>
-	<Item>
-		<Key>Vote</Key>
-		<Value>1</Value>
-	</Item>
-	<Item>
 		<Key>Receiver</Key>
 		<Value>VotingComponent</Value>
 	</Item>
@@ -27,6 +19,6 @@
 	</Item>
 	<Item>
 		<Key>Purpose</Key>
-		<Value>Vote</Value>
+		<Value>Count</Value>
 	</Item>
 </Msg>
