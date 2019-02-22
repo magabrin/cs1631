@@ -183,7 +183,6 @@ public class CreateTemp
 
     private static void ProcessMsg(KeyValueList kvList) throws Exception
     {
-
         String scope = kvList.getValue("Scope");
         if (!SCOPE.startsWith(scope))
         {
