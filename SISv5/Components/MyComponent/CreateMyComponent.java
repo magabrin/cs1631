@@ -28,7 +28,7 @@ public class CreateMyComponent
 	// name of this component
     private static final String NAME = "Vote";
     // messages types that can be handled by this component
-    private static final List<String> TYPES = new ArrayList<String>(Arrays.asList(new String[] { "Setting", "Confirm" }));
+    private static final List<String> TYPES = new ArrayList<String>(Arrays.asList(new String[] { "Vote","Kill","Start","Close" }));
 
 
     private static Timer timer = new Timer();
