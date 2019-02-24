@@ -5,3 +5,6 @@ start cmd /c runInitializer.bat
 pause
 cd  runIndividualComp
 start cmd /c runVotingComponent.bat
+cd ../../
+pause
+start cmd /c java -jar .\PrjRemote.jar
