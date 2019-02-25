@@ -157,13 +157,14 @@ public class CreateVotingComponent {
                 //check tallyTable init
                 if (tallyTable != null) {
                   System.out.println("Casting vote.");
-                  System.out.println("Email: " + email + "\tVoteID: " + voteID);
                   if (!voterTable.containsKey(email)) {
-                    if (tallyTable.containsKey(voteID))
+                    if (tallyTable.containsKey(voteID)) {
+                      System.out.println("Email: " + email + "\tVoteID: " + voteID);
+                      voterTable.put(email, true);
                       tallyTable.put(voteID, tallyTable.get(voteID) + 1);
+                    }
                     else
-                      tallyTable.put(voteID, 1);
-                    voterTable.put(email, true);
+                      System.out.println(voteID + " not in table.");
                   } else
                     System.out.println(email + " already casted vote.");
                 } else {

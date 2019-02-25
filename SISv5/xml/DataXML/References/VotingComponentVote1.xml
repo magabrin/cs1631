@@ -14,7 +14,7 @@
 		<Value>crk70@pitt.edu</Value>
 	</Item>
 	<Item>
-		<Key>Vote</Key>
+		<Key>VoteID</Key>
 		<Value>1</Value>
 	</Item>
 	<Item>
@@ -28,5 +28,9 @@
 	<Item>
 		<Key>Purpose</Key>
 		<Value>Vote</Value>
+	</Item>
+  <Item>
+		<Key>msgID</Key>
+		<Value>701</Value>
 	</Item>
 </Msg>
