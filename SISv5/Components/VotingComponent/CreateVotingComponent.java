@@ -190,27 +190,48 @@ public class CreateVotingComponent {
                   N = 1;
                 }
 
-                if (tallyTable != null && N > 0 && N <= tallyTable.size()) {
-                  Collection<Integer> votes = new ArrayList<Integer>();
-                  Set<Integer> set = new HashSet<Integer>(tallyTable.values());
-                  votes.addAll(set);
-                  Collection<Integer> maxes = new ArrayList<Integer>();
-                  int max;
+                if (tallyTable == null) {
+                  System.out.println("Tally table not initialized.");
+                }
+                if(tallyTable.size() == 0) {
+                  System.out.println("No votes cast.");
+                  break;
+                }
+                else if(N < 0 || N >= tallyTable.size()) {
+                  System.out.println("Invalid size for 'N'.");
+                  break;
+                }
 
-                  for (int i = N; i > 0; i--) {
-                    max = Collections.max(votes);
-                    votes.remove(max);
-                    maxes.add(max);
-                  }
 
-                  for(Integer m : maxes) {
-                    for (Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
-                      if(entry.getValue().equals(m)) {
-                        System.out.println("Key: " + entry.getKey() + " " + " Value: " + entry.getValue());
+                Collection<Integer> votes = new ArrayList<Integer>();
+                Set<Integer> set = new HashSet<Integer>(tallyTable.values());
+                votes.addAll(set);
+                Collection<Integer> maxes = new ArrayList<Integer>();
+                int max;
+
+                for (int i = N; i > 0; i--) {
+                  max = Collections.max(votes);
+                  votes.remove(max);
+                  maxes.add(max);
+                }
+
+                StringBuilder rankedReportSB = new StringBuilder();
+                boolean first = true;
+                for(Integer m : maxes) {
+                  for (Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
+                    if(entry.getValue().equals(m)) {
+                      if(!first) {
+                        rankedReportSB.append(';');
                       }
+                      rankedReportSB.append(entry.getKey());
+                      rankedReportSB.append(',');
+                      rankedReportSB.append(entry.getValue());
+                      first = false;
                     }
                   }
                 }
+                String rankedReport = rankedReportSB.toString();
+                System.out.println("RankedReport: " + rankedReport);
                 break;
               case "703": //INITIALIZE TALLY TABLE
                 System.out.println("Initialize Tally Table");
