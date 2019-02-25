@@ -10,6 +10,14 @@
 		<Value>Setting</Value>
 	</Item>
 	<Item>
+		<Key>Email</Key>
+		<Value>ryan.gabrin@pitt.edu</Value>
+	</Item>
+	<Item>
+		<Key>VoteID</Key>
+		<Value>1212</Value>
+	</Item>
+	<Item>
 		<Key>Receiver</Key>
 		<Value>VotingComponent</Value>
 	</Item>
@@ -19,14 +27,10 @@
 	</Item>
 	<Item>
 		<Key>Purpose</Key>
-		<Value>Admin</Value>
-	</Item>
-  <Item>
-		<Key>Password</Key>
-		<Value>ironman</Value>
+		<Value>Vote</Value>
 	</Item>
   <Item>
 		<Key>msgID</Key>
-		<Value></Value>
+		<Value>701</Value>
 	</Item>
 </Msg>
