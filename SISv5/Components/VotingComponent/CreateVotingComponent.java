@@ -150,28 +150,26 @@ public class CreateVotingComponent {
       case "Setting":
         switch (purpose) {
           case "Vote":
-            switch (msgID) {
-              case "701":
-                String email = kvList.getValue("Email");
-                Integer voteID = Integer.parseInt(kvList.getValue("VoteID"));
-                //check tallyTable init
-                if (tallyTable != null) {
-                  System.out.println("Casting vote.");
-                  if (!voterTable.containsKey(email)) {
-                    if (tallyTable.containsKey(voteID)) {
-                      System.out.println("Email: " + email + "\tVoteID: " + voteID);
-                      voterTable.put(email, true);
-                      tallyTable.put(voteID, tallyTable.get(voteID) + 1);
-                    }
-                    else
-                      System.out.println(voteID + " not in table.");
+            if(msgID.equals("701")) {
+              String email = kvList.getValue("Email");
+              Integer voteID = Integer.parseInt(kvList.getValue("VoteID"));
+              //check tallyTable init
+              if (tallyTable != null) {
+                System.out.println("Casting vote.");
+                if (!voterTable.containsKey(email)) {
+                  if (tallyTable.containsKey(voteID)) {
+                    System.out.println("Email: " + email + "\tVoteID: " + voteID);
+                    voterTable.put(email, true);
+                    tallyTable.put(voteID, tallyTable.get(voteID) + 1);
                   } else
-                    System.out.println(email + " already casted vote.");
-                } else {
-                  System.out.println("Tally table not initialized.");
-                }
-                break;
+                    System.out.println(voteID + " not in table.");
+                } else
+                  System.out.println(email + " already casted vote.");
+              } else {
+                System.out.println("Tally table not initialized.");
+              }
             }
+            break;
           case "Admin":
             System.out.println("Checking password.");
             String password = kvList.getValue("Password");
@@ -205,9 +203,11 @@ public class CreateVotingComponent {
                     maxes.add(max);
                   }
 
-                  for (Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
-                    if (maxes.contains(entry.getValue())) {
-                      System.out.println(entry.getKey() + " " + entry.getValue());
+                  for(Integer m : maxes) {
+                    for (Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
+                      if(entry.getValue().equals(m)) {
+                        System.out.println("Key: " + entry.getKey() + " " + " Value: " + entry.getValue());
+                      }
                     }
                   }
                 }
@@ -215,14 +215,14 @@ public class CreateVotingComponent {
               case "703": //INITIALIZE TALLY TABLE
                 System.out.println("Initialize Tally Table");
                 try {
-                  String[] candidates = kvList.getValue("").split(";");
+                  String[] candidates = kvList.getValue("CandidateList").split(";");
                   tallyTable = new HashMap<Integer, Integer>();
                   for (String c : candidates) {
-                    tallyTable.put(new Integer(Integer.parseInt(c)), 0);
+                      tallyTable.put(new Integer(Integer.parseInt(c)), 0);
                   }
-                  System.out.println("Tally table success " + tallyTable.toString());
+                  System.out.println("Tally table success.");
                 } catch (Exception E) {
-                  tallyTable = new HashMap<Integer, Integer>();
+                  System.out.println("Tally table not successful " + E);
                 }
                 break;
             }
