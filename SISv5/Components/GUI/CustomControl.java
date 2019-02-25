@@ -41,7 +41,7 @@ public class CustomControl extends VBox {
 	@FXML
 	private TextArea console;
 	@FXML
-	private TextField max;
+	private TextField posterId;
 	@FXML
 	private TextField min;
 	@FXML
@@ -85,10 +85,10 @@ public class CustomControl extends VBox {
 
 						int mi = Integer.parseInt(newValue);
 
-						int ma = Integer.parseInt(max.textProperty().get());
+						int ma = Integer.parseInt(posterId.textProperty().get());
 
 						if (mi > ma) {
-							max.setText(mi + "");
+							posterId.setText(mi + "");
 						}
 
 						min.setText(mi + "");
@@ -99,7 +99,7 @@ public class CustomControl extends VBox {
 				}
 			});
 
-			max.textProperty().addListener(new ChangeListener<String>() {
+			posterId.textProperty().addListener(new ChangeListener<String>() {
 
 				@Override
 				public void changed(
@@ -114,10 +114,10 @@ public class CustomControl extends VBox {
 						if (ma < mi) {
 							min.setText(ma + "");
 						}
-						max.setText(ma + "");
+						posterId.setText(ma + "");
 
 					} catch (NumberFormatException e) {
-						max.setText(oldValue);
+						posterId.setText(oldValue);
 					}
 				}
 			});
@@ -251,7 +251,9 @@ public class CustomControl extends VBox {
 			kill.putPair("MessageType", "Setting");
 			kill.putPair("Sender", CreateGUI.NAME);
 			kill.putPair("Receiver", getTitle());
-			kill.putPair("Purpose", "Kill");
+			kill.putPair("Purpose", "Admin");//"Kill");
+			kill.putPair("Password", "ironman");
+			kill.putPair("msgId", "22")
 
 			encoder.sendMsg(kill);
 
@@ -288,24 +290,27 @@ public class CustomControl extends VBox {
 				act.putPair("MessageType", "Setting");
 				act.putPair("Sender", CreateGUI.NAME);
 				act.putPair("Receiver", getTitle());
-				act.putPair("Purpose", "Activate");
 
-				act.putPair("Max", getMax());
-				act.putPair("Min", getMin());
+				// modified
+				act.putPair("Purpose", "Vote); "//"Activate");
 
-				LocalDate st = getStartDate();
-				Instant instantS = st.atStartOfDay()
-						.atZone(ZoneId.systemDefault()).toInstant();
-				Date dateS = Date.from(instantS);
-
-				LocalDate ed = getEndDate();
-				Instant instantE = ed.atStartOfDay()
-						.atZone(ZoneId.systemDefault()).toInstant();
-				Date dateE = Date.from(instantE);
-
-				act.putPair("StartDate", dateS.getTime() + "");
-				act.putPair("EndDate", dateE.getTime() + "");
-				act.putPair("RefreshRate", getRefreshRate());
+				// modified
+				act.putPair("Vote", getMax());
+//				act.putPair("Min", getMin());
+//
+//				LocalDate st = getStartDate();
+//				Instant instantS = st.atStartOfDay()
+//						.atZone(ZoneId.systemDefault()).toInstant();
+//				Date dateS = Date.from(instantS);
+//
+//				LocalDate ed = getEndDate();
+//				Instant instantE = ed.atStartOfDay()
+//						.atZone(ZoneId.systemDefault()).toInstant();
+//				Date dateE = Date.from(instantE);
+//
+//				act.putPair("StartDate", dateS.getTime() + "");
+//				act.putPair("EndDate", dateE.getTime() + "");
+//				act.putPair("RefreshRate", getRefreshRate());
 
 				encoder.sendMsg(act);
 
@@ -381,24 +386,27 @@ public class CustomControl extends VBox {
 		active.setTextFill(Color.GREEN);
 	}
 
+
+	// modified
+	public String getMax() {
+		return posteridProperty().get();
+	}
+	// modified
+	public void setMax(String value) {
+		posteridProperty().set(value);
+	}
+	// modified
+	public StringProperty posteridProperty() {
+		return posterId.textProperty();
+	}
+
+
 	public void setEnable() {
 		active.setDisable(false);
 	}
 
 	public StringProperty consoleProperty() {
 		return console.textProperty();
-	}
-
-	public String getMax() {
-		return maxProperty().get();
-	}
-
-	public void setMax(String value) {
-		maxProperty().set(value);
-	}
-
-	public StringProperty maxProperty() {
-		return max.textProperty();
 	}
 
 	public String getMin() {
@@ -450,7 +458,10 @@ public class CustomControl extends VBox {
 	}
 
 	public void setSorAItems(){
-		max.setDisable(true);
+		// modified
+		posterId.setDisable(true);
+
+
 		min.setDisable(true);
 		startDate.setDisable(true);
 		endDate.setDisable(true);

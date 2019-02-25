@@ -1,0 +1,57 @@
+Milestone 2: Give a demo of your component. (15 points for CS1631)
+
+    The demo is similar to the demo you give at the first milestone, except that the details of the application of your component should be
+    demonstrated.
+
+    If you have not successfully implemented the Input Processor to transform incoming phone call into CastVote message 701, you
+    can still use the remote control to give the demo following the phone to PC scenario.
+
+    You should pre-store the messages (as XML documents) so that you can do the demo quickly.
+
+    You can also instantiate more than one remote control in your demo, in case you need them.
+
+    The grading is 10 points for successful demo, 2 points for voter usability, 2 points for administrator usability
+    and 1 point for security.
+
+
+Rehearsal: (bonus points) If your group have successfully implemented the InputProcessor and VotingSoftware Components
+(or a combined component) for the Android app, you will be rehearsing to deal with the real voting events on CSDay.
+
+
+1.  Voter can send email from his/her smart phone to a specific PC running voting softwareX (Linux version).
+
+2.  Upon receipt of the email containing the ID number of the best poster (only one should be selected), the said ID number will
+    be entered in a TallyTable with attributes CandidateID, count.
+
+3.  The phone number of the voter will be remembered in a VoterTable with attributes VoterPhoneNo, CandidateID, so that no voter
+    can use the same phone to vote twice.
+
+4.  The administrator at the PC running voting softwareX can issue a special command, which will terminate the voting.
+
+    4a. The voting softwareX will display the TallyTable in decreasing number of votes so that the first winner will be displayed first
+        and so on.
+
+    4b. At the end the VoterTable will be eliminated.
+
+
+Hashmap<string, int> tallyTable = new Hashmap<string, int>();
+Hashmap<string, boolean> voterTable = new Hashmap<string, boolean>();
+
+if (!voterTable[incomingVote.email]) { // new voter
+    if (tallyTable[incomVote.id]){
+        tallyTable[incomVote]++;
+    } else {
+        tallyTable.add(incomVote.id, 1)
+    }
+    voterTable.add(incomingVote.email, true)
+}
+
+
+
+Admin XML requests:
+    Kill
+    connect
+    activate
+    deactivate
+    request report
+    initialize tally tallyTable

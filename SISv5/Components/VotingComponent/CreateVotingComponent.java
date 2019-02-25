@@ -110,8 +110,13 @@ public class CreateVotingComponent {
 
     private static void initRecord() {
         record.putPair("Scope", SCOPE);
-        record.putPair("MessageType", "Register");
+        record.putPair("MessageType", "guiVoting");
         record.putPair("Sender", NAME);
+
+        alert.putPair("Scope", SCOPE);
+        alert.putPair("MessageType", "Alert");
+        alert.putPair("Sender", NAME);
+        alert.putPair("Purpose", "VoteAlert");
     }
 
     /*
@@ -169,6 +174,14 @@ public class CreateVotingComponent {
                                 } else {
                                     System.out.println("Tally table not initialized.");
                                 }
+
+                                alert.removePair("Receiver");
+                                alert.putPair("Receiver", "DiUploader");
+                                encoder.sendMsg(alert);
+//                                alert.removePair("Receiver");
+//                                alert.putPair("Receiver", "DiController");
+//                                encoder.sendMsg(alert);
+
                                 break;
                         }
                     case "Admin":

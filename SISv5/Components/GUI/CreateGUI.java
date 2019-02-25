@@ -226,6 +226,15 @@ class MonitorTask implements Runnable {
 			});
 
 			break;
+		case "guiVoting":
+
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					kvList.removePair("Scope");
+					map.put(sender,kvList);
+				}
+			});
 		case "Confirm":
 			System.out.println("Connect to SISServer successful.");
 			break;
