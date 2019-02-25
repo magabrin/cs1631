@@ -215,7 +215,7 @@ public class CreateVotingComponent {
                             case "703": //INITIALIZE TALLY TABLE
                                 System.out.println("Initialize Tally Table");
                                 try {
-                                    String[] candidates = kvList.getValue("Password").split(";");
+                                    String[] candidates = kvList.getValue("").split(";");
                                     tallyTable = new HashMap<Integer, Integer>();
                                     for (String c : candidates) {
                                         tallyTable.put(new Integer(Integer.parseInt(c)), 0);
