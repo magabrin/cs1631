@@ -191,26 +191,7 @@ public class CreateVotingComponent {
                                     N = 1;
                                 }
 
-                                if (tallyTable != null && N > 0 && N <= tallyTable.size())
-                                {
-                                    Collection<Integer> votes = new ArrayList<Integer>();
-                                    Set<Integer> set = new HashSet<Integer>(tallyTable.values());
-                                    votes.addAll(set);
-                                    Collection<Integer> maxes = new ArrayList<Integer>();
-                                    int max;
-
-                                    for(int i=N; i>0; i--) {
-                                        max = Collections.max(votes);
-                                        votes.remove(max);
-                                        maxes.add(max);
-                                    }
-
-                                    for(Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
-                                        if(maxes.contains(entry.getValue())) {
-                                            System.out.println(entry.getKey() + " " + entry.getValue());
-                                        }
-                                    }
-                                }
+                                showResults(N);
                                     break;
                             case "703": //INITIALIZE TALLY TABLE
                                 System.out.println("Initialize Tally Table");
@@ -225,13 +206,44 @@ public class CreateVotingComponent {
                                 catch(Exception E) {
                                     tallyTable = new HashMap<Integer, Integer>();
                                 }
-                                    break;
+									break;
+							case "704": // admin terminate voting
+								System.out.println("Admin Terminating Voting");
+								voterTable = new HashMap<String, Boolean>();
+								showResults(tallyTable.size());
+								tallyTable = null;
                         }
                         break;
                 }
         }
         System.out.println("\n");
-    }
+	}
+	
+
+	private static void showResults(int N){
+
+		if (tallyTable != null && N > 0 && N <= tallyTable.size())
+		{
+			Collection<Integer> votes = new ArrayList<Integer>();
+			Set<Integer> set = new HashSet<Integer>(tallyTable.values());
+			votes.addAll(set);
+			Collection<Integer> maxes = new ArrayList<Integer>();
+			int max;
+
+			for(int i=N; i>0; i--) {
+				max = Collections.max(votes);
+				votes.remove(max);
+				maxes.add(max);
+			}
+
+			for(Map.Entry<Integer, Integer> entry : tallyTable.entrySet()) {
+				if(maxes.contains(entry.getValue())) {
+					System.out.println(entry.getKey() + " " + entry.getValue());
+				}
+			}
+		}
+	}
+
 }
 
 
