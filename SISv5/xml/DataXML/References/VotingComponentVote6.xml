@@ -11,11 +11,11 @@
 	</Item>
 	<Item>
 		<Key>Email</Key>
-		<Value>crk70@pitt.edu</Value>
+		<Value>collin@pitt.edu</Value>
 	</Item>
 	<Item>
-		<Key>Vote</Key>
-		<Value>1</Value>
+		<Key>VoteID</Key>
+		<Value>3</Value>
 	</Item>
 	<Item>
 		<Key>Receiver</Key>
@@ -28,5 +28,9 @@
 	<Item>
 		<Key>Purpose</Key>
 		<Value>Vote</Value>
+	</Item>
+  <Item>
+		<Key>msgID</Key>
+		<Value>701</Value>
 	</Item>
 </Msg>

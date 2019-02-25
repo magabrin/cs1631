@@ -23,6 +23,10 @@
 	</Item>
   <Item>
 		<Key>Password</Key>
+		<Value>ironman</Value>
+	</Item>
+  <Item>
+		<Key>msgID</Key>
 		<Value></Value>
 	</Item>
 </Msg>

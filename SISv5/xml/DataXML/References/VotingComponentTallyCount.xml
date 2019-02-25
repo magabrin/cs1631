@@ -26,11 +26,11 @@
 		<Value>ironman</Value>
 	</Item>
   <Item>
-		<Key>msgID</Key>
-		<Value>703</Value>
-	</Item>
+    <Key>N</Key>
+    <Value>2</Value>
+  </Item>
   <Item>
-		<Key>CandidateList</Key>
-		<Value>1;2;3;4;5</Value>
+		<Key>msgID</Key>
+		<Value>702</Value>
 	</Item>
 </Msg>
