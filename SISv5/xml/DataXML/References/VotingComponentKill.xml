@@ -19,6 +19,18 @@
 	</Item>
 	<Item>
 		<Key>Purpose</Key>
+		<Value>Admin</Value>
+	</Item>
+	<Item>
+		<Key>msgID</Key>
+		<Value>22</Value>
+	</Item>
+	<Item>
+		<Key>Name</Key>
 		<Value>Kill</Value>
+	</Item>
+	<Item>
+		<Key>Password</Key>
+		<Value>ironman</Value>
 	</Item>
 </Msg>
