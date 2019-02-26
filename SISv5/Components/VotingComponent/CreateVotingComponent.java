@@ -288,16 +288,25 @@ public class CreateVotingComponent {
             		}
 					break;
 					
-              case "704": // admin terminate voting
-                    System.out.println("Admin Terminating Voting");
-                    showResults(tallyTable.size());					
-					// Reset Voter table and show results of all voting
-					voterTable = new HashMap<String, Boolean>();
-					tallyTable = null;
-					break;
+			  case "704": // admin terminate voting
+					try{
+						showResults(tallyTable.size());	
+						System.out.println("Admin Terminating Voting");
+										
+						// Reset Voter table and show results of all voting
+						voterTable = new HashMap<String, Boolean>();
+						tallyTable = null;
+						break;
+					} catch(Exception e){
+						System.out.println("error while terminating");
+						break;
+					}
+			  		
 			
 
 				case "22":	// KILL
+					voterTable = new HashMap<String, Boolean>();
+					tallyTable = null;
 					System.out.println("killing...");
 					System.exit(0);
 					break;
