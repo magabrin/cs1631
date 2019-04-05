@@ -280,26 +280,34 @@ public class CreateVotingComponent {
 							case "703": //INITIALIZE TALLY TABLE
 								System.out.println("Initialize Tally Table");
 
-								try {
-									String[] candidates = kvList.getValue("CandidateList").split(";");
-									tallyTable = new HashMap<Integer, Integer>();
-									for (String c : candidates) {
-										tallyTable.put(new Integer(Integer.parseInt(c)), 0);
-									}
-									//System.out.println("Tally table success " + tallyTable.toString());
-									out.putPair("MsgID", "26");
-									out.putPair("AckMsgID", "703");
-									out.putPair("YesNo", "Yes");
-									out.putPair("Name", NAME);
-								}
-								catch(Exception E) {
-									//tallyTable = new HashMap<Integer, Integer>();
-									System.out.println("Tally table not initialized!");
-									out.putPair("MsgID", "26");
-									out.putPair("AckMsgID", "703");
-									out.putPair("YesNo", "No");
-									out.putPair("Name", NAME);
-								}
+                if(passwordAccepted) {
+                  try {
+                    String[] candidates = kvList.getValue("CandidateList").split(";");
+                    tallyTable = new HashMap<Integer, Integer>();
+                    for (String c : candidates) {
+                      tallyTable.put(new Integer(Integer.parseInt(c)), 0);
+                    }
+                    //System.out.println("Tally table success " + tallyTable.toString());
+                    out.putPair("MsgID", "26");
+                    out.putPair("AckMsgID", "703");
+                    out.putPair("YesNo", "Yes");
+                    out.putPair("Name", NAME);
+                  }
+                  catch(Exception E) {
+                    //tallyTable = new HashMap<Integer, Integer>();
+                    System.out.println("Tally table not initialized - error");
+                    out.putPair("MsgID", "26");
+                    out.putPair("AckMsgID", "703");
+                    out.putPair("YesNo", "No");
+                    out.putPair("Name", NAME);
+                  }
+                } else {
+                  System.out.println("Tally table not initialized - incorrect password");
+                  out.putPair("MsgID", "26");
+                  out.putPair("AckMsgID", "703");
+                  out.putPair("YesNo", "No");
+                  out.putPair("Name", NAME);
+                }
 								encoder.sendMsg(out);
 								break;
 
