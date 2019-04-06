@@ -1,0 +1,35 @@
+{
+  "name": "GuiWebserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development ./GuiWebserver/frontend/src/index.js --output ./GuiWebserver/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./GuiWebserver/frontend/src/index.js --output ./GuiWebserver/frontend/static/frontend/main.js",
+    "devstart": "webpack --mode development ./GuiWebserver/frontend/src/index.js --output ./GuiWebserver/frontend/static/frontend/main.js --watch"
+  },
+  "keywords": [],
+  "author": "Matthew Gabrin, Chris Kolimago",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^2.0.1",
+    "css-loader": "^2.1.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "immutability-helper": "^3.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {}
+}
