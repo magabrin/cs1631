@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'GuiWebserver.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'workforce',
-        'HOST': 'localhost', #stable: 10.5.1.29', #weird windows localhost docker mappping: 10.0.75.1
-        'PORT': 27017,        
+        'ENGINE': '',
+        'NAME': '',
+        'HOST': '',
+        'PORT': '',        
     }
 }
 

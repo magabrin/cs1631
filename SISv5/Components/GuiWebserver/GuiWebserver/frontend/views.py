@@ -7,3 +7,6 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 def index(request):
     return render(request, 'frontend/index.html')
 
+def get_vote(request):
+    if request.method == "POST":
+        print("in post")
