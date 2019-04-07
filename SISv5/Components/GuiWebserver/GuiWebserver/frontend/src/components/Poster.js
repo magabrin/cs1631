@@ -23,7 +23,7 @@ class Poster extends Component {
     return cookieValue;
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     let myForm = new FormData()
     myForm.append("test", "chris");
 
@@ -35,6 +35,7 @@ class Poster extends Component {
             'X-CSRFToken': this.getCookie('csrftoken'),
         }
     })
+    .then(() => {console.log("fetch complete")})
   }
 
   render() {
