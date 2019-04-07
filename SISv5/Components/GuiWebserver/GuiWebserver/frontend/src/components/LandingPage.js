@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import Poster from './Poster'
 import {
   HOMEPAGE, INPUTFILEDISPLAY, CLEANDATAPAGE, CONTRACTPAGE, BILLINGPAGE,
 } from './PageNames';
@@ -22,7 +23,20 @@ class LandingPage extends Component {
   }
 
   render() {
-    // const { data, loaded, placeholder } = this.state;
+  
+    return (
+      <div>
+        <Header page={this.state.page} handlePageChange={this.handlePageChange} />
+        <Poster />
+      </div>
+    );
+  }
+}
+
+export default LandingPage;
+
+
+  // const { data, loaded, placeholder } = this.state;
     // if (this.state.page === HOMEPAGE) {
     //   return (
     //     <div>
@@ -77,13 +91,3 @@ class LandingPage extends Component {
     //     </div>
     //   );
     // }
-    return (
-      <div>
-        <Header page={this.state.page} handlePageChange={this.handlePageChange} />
-
-      </div>
-    );
-  }
-}
-
-export default LandingPage;
