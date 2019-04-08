@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root type="javafx.scene.layout.VBox" cache="true" cacheHint="SPEED" prefHeight="194.0" prefWidth="470.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="972.0" prefWidth="830.0">
+      <children>
+        <Label layoutX="258.0" layoutY="14.0" prefHeight="85.0" prefWidth="314.0" text="Voting Application" textAlignment="CENTER">
+          <font>
+            <Font size="36.0" />
+          </font>
+        </Label>
+        <AnchorPane id="Content" layoutX="0.0" layoutY="84.0" minHeight="0.0" minWidth="0.0" prefHeight="618.0" prefWidth="830.0">
+          <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Initialize Tally Table: " />
+            <PasswordField id="ittPass" fx:id="password1" layoutX="23.0" layoutY="83.0" prefWidth="200.0" />
+            <Label layoutX="52.0" layoutY="46.0" text="Password" />
+            <Label layoutX="48.0" layoutY="132.0" text="Candidate List" />
+            <TextField fx:id="candidateList" layoutX="23.0" layoutY="170.0" prefWidth="200.0" />
+            <Label layoutX="70.0" layoutY="301.0" text="Cast Vote:" />
+            <Label layoutX="95.0" layoutY="450.0" text="Email" />
+            <TextField fx:id="email" layoutX="23.0" layoutY="494.0" prefWidth="200.0" />
+            <Button fx:id="initButton" layoutX="87.0" layoutY="222.0" mnemonicParsing="false" text="Init" />
+            <Label layoutX="69.0" layoutY="346.0" text="Candidate" />
+            <TextField fx:id="candidate" layoutX="23.0" layoutY="393.0" prefWidth="200.0" />
+            <Button fx:id="castButton" layoutX="81.0" layoutY="546.0" mnemonicParsing="false" text="Cast" />
+            <Label layoutX="585.0" layoutY="30.0" text="Request Report:" />
+            <PasswordField fx:id="password2" layoutX="567.0" layoutY="99.0" prefWidth="200.0" />
+            <Label layoutX="618.0" layoutY="62.0" text="Password" />
+            <Label layoutX="613.0" layoutY="148.0" text="# Winners" />
+            <TextField fx:id="winners" layoutX="567.0" layoutY="186.0" prefWidth="200.0" />
+            <Button fx:id="requestButton" layoutX="618.0" layoutY="234.0" mnemonicParsing="false" text="Request" />
+            <Label layoutX="649.0" layoutY="295.0" text="Kill:" />
+            <PasswordField fx:id="password3" layoutX="566.0" layoutY="374.0" prefWidth="200.0" />
+            <Label layoutX="618.0" layoutY="333.0" text="Password" />
+            <Label layoutX="591.0" layoutY="466.0" text="" />
+            <Button fx:id="killButton" layoutX="632.0" layoutY="424.0" mnemonicParsing="false" text="Kill" />
+          </children>
+        </AnchorPane>
+        <ScrollPane fx:id="output" hbarPolicy="NEVER" layoutX="14.0" layoutY="702.0" prefHeight="256.0" prefWidth="802.0">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+          </content>
+        </ScrollPane>
+      </children>
+    </AnchorPane>
+  </children>
+</fx:root>
