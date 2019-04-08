@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import socket
+from time import sleep
+import sys
+import select
 
 # Create your views here.
 HOST = '127.0.0.1'
@@ -22,7 +25,7 @@ def get_vote(request):
 
         voterEmail = request.POST.get('voterEmail', None)
         posterNumber = request.POST.get('posterNumber', None)        
-        xmlcommand = "SScope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Vote" + delim + "msgID" + delim + "701" + delim + "VoteID" + delim + str(posterNumber) + delim + "Email" + delim + voterEmail + delim
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "GuiWebserver" + delim + "Purpose" + delim + "Vote" + delim + "msgID" + delim + "701" + delim + "VoteID" + delim + str(posterNumber) + delim + "Email" + delim + voterEmail + delim + ")\n"
         print(xmlcommand)
         xmlcommand = xmlcommand.encode()
 
@@ -32,8 +35,10 @@ def get_vote(request):
             print("made the connection")
             s.send(xmlcommand)
             print("sent the xml")
-            # data = s.recv(1024)
-            # print(data)
+            while True:
+                s.settimeout(10)
+                data = s.recv(1024)
+                print(data)
         
     return HttpResponseRedirect("/")
 
@@ -46,7 +51,7 @@ def init_tally(request):
         for i in range(int(numPosters)):
             posterArr.append(str(i+1))
         posterNumberStr = ";".join(posterArr)
-        xmlcommand = "SScope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "GuiWebserver" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim + ")\n"
         print(xmlcommand)
         xmlcommand = xmlcommand.encode()
 
@@ -54,10 +59,51 @@ def init_tally(request):
             print("made the socket")
             s.connect((HOST, PORT))
             print("made the connection")
-            s.send(xmlcommand)
+            s.sendall(xmlcommand)
             print("sent the xml from line 58")
-            data = s.recv(1024)
-            print(data)
+            #s.setblocking(0)
+            timeout_in_seconds = 3
+            ready = select.select([s], [], [], timeout_in_seconds)
+            if ready[0]:
+                data = mysocket.recv(4096)
+                print(data)
+            else:
+                print("not ready")
+            
+            # data = s.recv(4096)
+            # print(data)
+            
+                
+
+        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        #     s.connect((HOST, PORT))            
+        #     while True:
+        #         try:
+        #             print("trying to recieve")
+        #             sleep(1000)
+        #             msg = s.recv(4096)
+        #         except Exception as e:
+        #             print(e)
+        #             err = e.args[0]
+        #             # this next if/else is a bit redundant, but illustrates how the timeout exception is setup
+        #             sleep(1)
+        #             print('recv timed out, retry later')
+        #             continue
+        #             # else:
+        #             #     print(e)
+        #             #     sys.exit(1)
+        #         except socket.error as e:
+        #             # Something else happened, handle error, exit, etc.
+        #             print(e)
+        #             sys.exit(1)
+        #         else:
+        #             if len(msg) == 0:
+        #                 print('orderly shutdown on server end')
+        #                 sys.exit(0)
+        #             else:
+        #                 # got a message do something :)
+        #                 print("successfully got a message")            
+        #                 print(msg)
     return HttpResponse("success")
 
 
@@ -65,7 +111,7 @@ def show_results(request):
     if request.method == "POST":
         n = request.POST.get('n',1)
         password = request.POST.get('password', "wrong password")
-        xmlcommand = "SScope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "702" + delim + "N" + delim + n + delim
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "702" + delim + "N" + delim + n + delim + ")\n"
         xmlcommand = xmlcommand.encode()
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -74,8 +120,8 @@ def show_results(request):
             print("made the connection")
             s.send(xmlcommand)
             print("sent the xml")
-            # data = s.recv(1024)
-            # print(data)
+            data = s.recv(1024)
+            print(data)
     return HttpResponse("success")
 
 
@@ -83,7 +129,7 @@ def show_results(request):
 def kill_voting(request):
     if request.method == "POST":        
         password = request.POST.get('password', "wrong password")
-        xmlcommand = "SScope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "22" + delim + "Name" + delim + "Kill" + delim
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "22" + delim + "Name" + delim + "Kill" + delim + ")\n"
         xmlcommand = xmlcommand.encode()
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -104,7 +150,7 @@ def kill_voting(request):
 # 			builder.append(entry.getKey() + delim + entry.getValue() + delim);   delim = "$$$";
 # 		}
 # 		// X$$$Y$$$, minimum
-# 		builder.append(")");
+# 		builder.append(")\n");
 # 		return builder.toString();
 # 	}
 
