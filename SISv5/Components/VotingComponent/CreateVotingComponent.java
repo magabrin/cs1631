@@ -306,7 +306,11 @@ public class CreateVotingComponent {
                   out.putPair("MsgID", "26");
                   out.putPair("AckMsgID", "703");
                   out.putPair("YesNo", "No");
+                  out.putPair("Sender", NAME);
                   out.putPair("Name", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Scope", "SIS.Scope1");
                 }
 								encoder.sendMsg(out);
 								break;
@@ -489,4 +493,3 @@ public class CreateVotingComponent {
 //                } catch (Exception E) {
 //                  System.out.println("Tally table not successful " + E);
 //>>>>>>> chris*/
-

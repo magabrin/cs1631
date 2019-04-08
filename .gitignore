@@ -1,4 +1,5 @@
 .idea/
+*.pyc
 VenvDjango/Lib/site-packages/pip/_vendor/packaging/__about__.py
 VenvDjango/Lib/site-packages/pip/_vendor/msgpack/fallback.py
 VenvDjango/Lib/site-packages/pip/_vendor/msgpack/exceptions.py
@@ -110,4 +111,3 @@ VenvDjango/Lib/site-packages/pip/_internal/__pycache__/exceptions.cpython-37.pyc
 VenvDjango/Lib/site-packages/pip/_internal/__pycache__/download.cpython-37.pyc
 VenvDjango/Lib/site-packages/pip/_internal/__pycache__/configuration.cpython-37.pyc
 VenvDjango/Lib/site-packages/pip/_internal/__pycache__/compat.cpython-37.pyc
-VenvDjango/Lib/site-packages/pip/_internal/__pycache__/cmdoptions.cpython-37.pyc
