@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 import socket
-from time import sleep
+from time import sleep, time
 import sys
 import select
 
@@ -51,7 +51,7 @@ def init_tally(request):
         for i in range(int(numPosters)):
             posterArr.append(str(i+1))
         posterNumberStr = ";".join(posterArr)
-        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "GuiWebserver" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim + ")\n"
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim + ")\n"
         print(xmlcommand)
         xmlcommand = xmlcommand.encode()
 
@@ -61,18 +61,38 @@ def init_tally(request):
             print("made the connection")
             s.sendall(xmlcommand)
             print("sent the xml from line 58")
-            # s.setblocking(0)
+            data = s.recv(1024)
+            
+        print(data)
+
+
+            # # s.setblocking(0)
             # timeout_in_seconds = 3
-            # ready = select.select([s], [], [], timeout_in_seconds)
-            # if ready[0]:
-            #     data = mysocket.recv(4096)
-            #     print(data)
-            # else:
-            #     print("not ready")
-            
-            data = s.recv(4096)
-            print(data)
-            
+            # # ready = select.select([s], [], [], timeout_in_seconds)
+            # # if ready[0]:
+            # #     data = mysocket.recv(4096)
+            # #     print(data)
+            # # else:
+            # #     print("not ready")
+            # # s.settimeout(5)
+            # # data = s.recv(16)
+            # # print(data)
+            # total_data = []
+            # data = ''
+            # while True:
+            #     if total_data:
+            #         break
+            #     try:
+            #         data = s.recv(8192)
+            #         if data:
+            #             total_data.append(data)
+            #             begin = time()
+            #         else:
+            #             sleep(1)
+            #     except:
+            #         pass
+            # print(data)
+
                 
 
         # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
