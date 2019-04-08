@@ -22,7 +22,7 @@ public class CreateGUI extends Application {
 			.observableHashMap();
 
 	private Proc pro = new Proc(map);
-	
+
 	public static final String SCOPE = "SIS.Scope1";
 	// name of this component
     public static final String NAME = "GUI";
@@ -30,8 +30,9 @@ public class CreateGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			SISFlow root = new SISFlow(map);
+			//SISFlow root = new SISFlow(map);
 			//ScrollPane root = new ScrollPane();
+			CustomControl root = new CustomControl();
 			Scene scene = new Scene(root);
 
 			// scene.getStylesheets().add(
@@ -48,7 +49,7 @@ public class CreateGUI extends Application {
 			// }
 			// }, new Date(), 500);
 
-			
+
 
 			/*root.viewportBoundsProperty().addListener(
 					new ChangeListener<Bounds>() {
@@ -64,8 +65,6 @@ public class CreateGUI extends Application {
 			root.setContent(flow);*/
 
 			primaryStage.setScene(scene);
-			primaryStage.setMinWidth(515);
-			primaryStage.setMinHeight(500);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,9 +97,8 @@ class MonitorTask implements Runnable {
 	// scope of this component
 	//private final String SCOPE = "SIS.Scope1";
 	// messages types that can be handled by this component
-	private final List<String> TYPES = new ArrayList<String>(
-			Arrays.asList(new String[] { "Reading", "Alert", "Confirm",
-					"Connect" }));
+	private static final List<String> TYPES = new ArrayList<String>(
+			Arrays.asList(new String[]{"Setting", "Confirm"}));
 
 	private ObservableMap<String, KeyValueList> map;
 
@@ -135,7 +133,7 @@ class MonitorTask implements Runnable {
 				decoder = new MsgDecoder(universal.getInputStream());
 				// bind the message writer to outputstream of the socket
 				encoder = new MsgEncoder(universal.getOutputStream());
-		
+
 				/*
 				 * construct a Connect message to establish the connection
 				 */
@@ -182,63 +180,59 @@ class MonitorTask implements Runnable {
 
 	private void ProcessMsg(KeyValueList kvList) throws Exception {
 
-		String scope = kvList.getValue("Scope");
-		if (!CreateGUI.SCOPE.startsWith(scope)) {
-			return;
-		}
+		System.out.println("entering");
 
-		String messageType = kvList.getValue("MessageType");
-		if (!TYPES.contains(messageType)) {
-			return;
-		}
+		System.out.println(kvList.toString());
 
-		String sender = kvList.getValue("Sender");
-
-		String receiver = kvList.getValue("Receiver");
-
-		String purpose = kvList.getValue("Purpose");
-
-		switch (messageType) {
-		case "Connect":
-			String name = kvList.getValue("Name");
-			String role = kvList.getValue("Role");
-			if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						// if you change the UI, do it here !
-						kvList.removePair("Scope");
-						map.put(name, kvList);
-					}
-				});
-			}
-			break;
-		case "Alert":
-		case "Reading":
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					// if you change the UI, do it here !
-					kvList.removePair("Scope");
-					map.put(sender, kvList);
-				}
-			});
-
-			break;
-		case "guiVoting":
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					kvList.removePair("Scope");
-					map.put(sender,kvList);
-				}
-			});
-		case "Confirm":
-			System.out.println("Connect to SISServer successful.");
-			break;
-		}
+	// 	String scope = kvList.getValue("Scope");
+	// 	if (!CreateGUI.SCOPE.startsWith(scope)) {
+	// 		return;
+	// 	}
+	//
+	// 	String messageType = kvList.getValue("MessageType");
+	// 	if (!TYPES.contains(messageType)) {
+	// 		return;
+	// 	}
+	//
+	// 	String sender = kvList.getValue("Sender");
+	//
+	// 	String receiver = kvList.getValue("Receiver");
+	//
+	// 	String purpose = kvList.getValue("Purpose");
+	//
+	// 	switch (messageType) {
+	// 	case "Connect":
+	// 		String name = kvList.getValue("Name");
+	// 		String role = kvList.getValue("Role");
+	// 		if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
+	// 			Platform.runLater(new Runnable() {
+	// 				@Override
+	// 				public void run() {
+	// 					// if you change the UI, do it here !
+	// 					kvList.removePair("Scope");
+	// 					map.put(name, kvList);
+	// 				}
+	// 			});
+	// 		}
+	// 		break;
+	// 	case "Alert":
+	// 	case "Reading":
+	//
+	// 		Platform.runLater(new Runnable() {
+	// 			@Override
+	// 			public void run() {
+	// 				// if you change the UI, do it here !
+	// 				kvList.removePair("Scope");
+	// 				map.put(sender, kvList);
+	// 			}
+	// 		});
+	//
+	// 		break;
+	// 	case "Confirm":
+	// 		System.out.println("Connect to SISServer successful.");
+	// 		break;
+	// 	}
+	// }
 	}
 }
 

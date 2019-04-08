@@ -26,16 +26,16 @@
               </rowConstraints>
                <children>
                   <TextArea fx:id="console" prefHeight="200.0" prefWidth="192.0" GridPane.columnSpan="2" GridPane.rowSpan="4" />
-                  <Label text="Poster ID" GridPane.columnIndex="2" />
-                  <!--<Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="1" />-->
-                  <!--<Label text="Start Date" GridPane.columnIndex="2" GridPane.rowIndex="2" />-->
-                  <!--<Label text="End Date" GridPane.columnIndex="2" GridPane.rowIndex="3" />-->
-                  <!--<Label text="Refresh" GridPane.columnIndex="2" GridPane.rowIndex="4" />-->
-                  <TextField fx:id="posterId" disable="false" GridPane.columnIndex="3" />
-                  <!--<TextField fx:id="min" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />-->
-                  <!--<TextField fx:id="refreshRate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="4" />-->
-                  <!--<DatePicker fx:id="startDate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />-->
-                  <!--<DatePicker fx:id="endDate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="3" />-->
+                  <Label text="Max" GridPane.columnIndex="2" />
+                  <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Start Date" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label text="End Date" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Label text="Refresh" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <TextField fx:id="max" disable="false" GridPane.columnIndex="3" />
+                  <TextField fx:id="min" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="refreshRate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="startDate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <DatePicker fx:id="endDate" disable="false" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <BorderPane GridPane.rowIndex="4">
                      <center>
                         <Button fx:id="kill" mnemonicParsing="false" onMouseClicked="#handlerKill" prefWidth="100.0" text="Kill" BorderPane.alignment="CENTER" />
