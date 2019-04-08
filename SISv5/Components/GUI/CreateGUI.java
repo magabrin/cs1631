@@ -182,57 +182,56 @@ class MonitorTask implements Runnable {
 
 		System.out.println("entering");
 
-		System.out.println(kvList.toString());
+		//System.out.println(kvList.toString());
 
-	// 	String scope = kvList.getValue("Scope");
-	// 	if (!CreateGUI.SCOPE.startsWith(scope)) {
-	// 		return;
-	// 	}
-	//
-	// 	String messageType = kvList.getValue("MessageType");
-	// 	if (!TYPES.contains(messageType)) {
-	// 		return;
-	// 	}
-	//
-	// 	String sender = kvList.getValue("Sender");
-	//
-	// 	String receiver = kvList.getValue("Receiver");
-	//
-	// 	String purpose = kvList.getValue("Purpose");
-	//
-	// 	switch (messageType) {
-	// 	case "Connect":
-	// 		String name = kvList.getValue("Name");
-	// 		String role = kvList.getValue("Role");
-	// 		if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
-	// 			Platform.runLater(new Runnable() {
-	// 				@Override
-	// 				public void run() {
-	// 					// if you change the UI, do it here !
-	// 					kvList.removePair("Scope");
-	// 					map.put(name, kvList);
-	// 				}
-	// 			});
-	// 		}
-	// 		break;
-	// 	case "Alert":
-	// 	case "Reading":
-	//
-	// 		Platform.runLater(new Runnable() {
-	// 			@Override
-	// 			public void run() {
-	// 				// if you change the UI, do it here !
-	// 				kvList.removePair("Scope");
-	// 				map.put(sender, kvList);
-	// 			}
-	// 		});
-	//
-	// 		break;
-	// 	case "Confirm":
-	// 		System.out.println("Connect to SISServer successful.");
-	// 		break;
-	// 	}
-	// }
+		String scope = kvList.getValue("Scope");
+		if (!CreateGUI.SCOPE.startsWith(scope)) {
+			System.out.println("scope quit");
+			return;
+		}
+
+		String messageType = kvList.getValue("MessageType");
+
+		String sender = kvList.getValue("Sender");
+
+		String receiver = kvList.getValue("Receiver");
+
+		String purpose = kvList.getValue("Purpose");
+
+		switch (messageType) {
+		case "Connect":
+			String name = kvList.getValue("Name");
+			String role = kvList.getValue("Role");
+			if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						// if you change the UI, do it here !
+						kvList.removePair("Scope");
+						map.put(name, kvList);
+					}
+				});
+			}
+			break;
+		case "Alert":
+		case "Reading":
+
+			System.out.println(kvList.toString());
+
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					// if you change the UI, do it here !
+					kvList.removePair("Scope");
+					map.put(sender, kvList);
+				}
+			});
+
+			break;
+		case "Confirm":
+			System.out.println("Connect to SISServer successful.");
+			break;
+		}
 	}
 }
 
