@@ -4,22 +4,21 @@ import Poster from './Poster'
 import {
   HOMEPAGE, INPUTFILEDISPLAY, CLEANDATAPAGE, CONTRACTPAGE, BILLINGPAGE,
 } from './PageNames';
+import InitTally from './InitTally';
 
 class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: HOMEPAGE,
+      tallyTableInit: false,
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
-  handlePageChange(val) {
-    if (this.state.page !== val) {
-      this.setState({
-        page: val,
-      });
-    }
+  initTallyTable = () => {
+    console.log("changin tallyTableInit to true");
+    this.setState({
+      tallyTableInit: true,
+    });
   }
 
   render() {
@@ -27,7 +26,7 @@ class LandingPage extends Component {
     return (
       <div>
         <Header page={this.state.page} handlePageChange={this.handlePageChange} />
-        <Poster />
+        {this.state.tallyTableInit ? <Poster /> : <InitTally tallyTableInit={this.initTallyTable}/>}
       </div>
     );
   }

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import '../../static/poster.css';
-import ShowResults from './ShowResults';
-import KillVoting from './KillVoting';
 
-class Poster extends Component {
+class KillVoting extends Component {
   constructor(props) {
     super(props); 
   }
@@ -29,12 +27,9 @@ class Poster extends Component {
     event.preventDefault();
 
     let myForm = new FormData()
-    myForm.append("voterEmail", event.target.elements.voterEmail.value);
-    myForm.append("posterNumber", event.target.elements.posterNumber.value);
-    console.log(event.target.elements.voterEmail);
-    console.log(event.target.elements.voterEmail.value);
-    console.log(myForm);
-    fetch("/submitPoster/", {
+    myForm.append("password", event.target.elements.password.value);    
+
+    fetch("/killVoting/", {
         method: "POST",
         body: myForm,
         headers: {
@@ -42,26 +37,22 @@ class Poster extends Component {
         },
         credentials: 'include'
     })
-    .then(() => {console.log("Poster fetch complete")})
-    .then(() => {console.log(this.getCookie('csrftoken'))})
+    .then(() => {this.props.tallyTableInit() })
+    .then(() => {console.log("KillVoting fetch complete")})
   }
 
   render() {
     return (
         <div>
-            <h2 className="chris">Vote for a Poster</h2>
+            <h2 className="chris">Kill Voting</h2>
             <form onSubmit={this.handleSubmit}>
-                <label>Voter Email:</label>
-                <input type="email" name="voterEmail"></input>
-                <label>Poster Number:</label>
-                <input type="number" name="posterNumber"></input>
+                <label>Admin Password:</label>
+                <input type="text" name="password"></input>
                 <input type="submit" value="Submit"></input>
             </form>
-            <ShowResults />
-            <KillVoting />
         </div>
     );
   }
 }
 
-export default Poster;
+export default KillVoting;
