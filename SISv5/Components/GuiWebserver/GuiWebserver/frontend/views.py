@@ -61,17 +61,17 @@ def init_tally(request):
             print("made the connection")
             s.sendall(xmlcommand)
             print("sent the xml from line 58")
-            #s.setblocking(0)
-            timeout_in_seconds = 3
-            ready = select.select([s], [], [], timeout_in_seconds)
-            if ready[0]:
-                data = mysocket.recv(4096)
-                print(data)
-            else:
-                print("not ready")
+            # s.setblocking(0)
+            # timeout_in_seconds = 3
+            # ready = select.select([s], [], [], timeout_in_seconds)
+            # if ready[0]:
+            #     data = mysocket.recv(4096)
+            #     print(data)
+            # else:
+            #     print("not ready")
             
-            # data = s.recv(4096)
-            # print(data)
+            data = s.recv(4096)
+            print(data)
             
                 
 
