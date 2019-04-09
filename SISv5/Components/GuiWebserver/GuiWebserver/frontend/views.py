@@ -12,9 +12,32 @@ import select
 HOST = '127.0.0.1'
 PORT = 53217
 delim = "$$$"
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((HOST, PORT))
 
 @ensure_csrf_cookie
 def index(request):
+    xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Connect" + delim + "Role" + delim + "Basic" + delim + "Name" + delim + "GuiWebserver" + delim + ")\n"
+    print(xmlcommand)
+    xmlcommand = xmlcommand.encode()
+
+    # s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("made the socket")
+    # s.connect((HOST, PORT))
+    print("made the connection")
+    s.sendall(xmlcommand)
+    print("sent the xml from line 58")
+    s.settimeout(5)
+    while True:            
+        try:
+            print("trying to recieve data")
+            data = s.recv(1024)
+            if data:
+                break
+        except Exception as e:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((HOST, PORT))
+            print(e)
+            pass
     return render(request, 'frontend/index.html')
 
 def get_vote(request):
@@ -51,17 +74,27 @@ def init_tally(request):
         for i in range(int(numPosters)):
             posterArr.append(str(i+1))
         posterNumberStr = ";".join(posterArr)
-        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "SISServer" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim + ")\n"
+        xmlcommand = "(Scope" + delim + "SIS.Scope1" + delim + "MessageType" + delim + "Setting" + delim + "Reciever" + delim + "VotingComponent" + delim + "Sender" + delim + "GuiWebserver" + delim + "Purpose" + delim + "Admin" + delim + "Password" + delim + password + delim + "msgID" + delim + "703" + delim + "CandidateList" + delim + posterNumberStr + delim + ")\n"
         print(xmlcommand)
         xmlcommand = xmlcommand.encode()
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            print("made the socket")
-            s.connect((HOST, PORT))
-            print("made the connection")
-            s.sendall(xmlcommand)
-            print("sent the xml from line 58")
-            data = s.recv(1024)
+        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        print("made the socket")
+        s.connect((HOST, PORT))
+        print("made the connection")
+        s.sendall(xmlcommand)
+        print("sent the xml from line 58")
+        s.settimeout(5)
+        while True:            
+            try:
+                print("trying to recieve data")
+                data = s.recv(1024)
+                if data:
+                    break
+            except Exception as e:
+                print(e)
+                pass
+        
             
         print(data)
 

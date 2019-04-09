@@ -83,10 +83,12 @@ public class SISTask implements Runnable {
      * process a certain message, execute corresponding actions
      */
     void ProcessMsg(KeyValueList kvList) throws Exception {
-		if(kvList.size()>0){
+        
+		if (kvList.size()>0) {
+            System.out.println("inside SISTask");
 			System.out.println("====================");
-		System.out.println(kvList);
-		System.out.println("====================");
+		    System.out.println(kvList);
+		    System.out.println("====================");
 		}
 		
         String scope = kvList.getValue("Scope");
@@ -120,8 +122,8 @@ public class SISTask implements Runnable {
 
             break;
         case "Setting":
-            SISHandlers.SettingHandler(scope, sender, receiver, direction,
-                    broadcast, kvList);
+            System.out.println("in case setting in SISTask processMsg");
+            SISHandlers.SettingHandler(scope, sender, receiver, direction, broadcast, kvList);
             break;
         case "Register":
 

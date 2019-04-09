@@ -474,9 +474,8 @@ public class SISHandlers {
 		// no sender no distribution
 	}
 
-	static void SettingHandler(String scope, String sender, String receiver,
-			String direction, String broadcast, KeyValueList kvList) {
-
+	static void SettingHandler(String scope, String sender, String receiver, String direction, String broadcast, KeyValueList kvList) {
+		System.out.println("inside the setting handler");
 		if (sender != null && !sender.equals("")) {
 			// a sender is required
 
@@ -490,10 +489,11 @@ public class SISHandlers {
 					if (direction != null && direction.equals("Up")) {
 
 						SISServer.mapping.entrySet().stream()
-								.filter(x -> (scope.startsWith(x.getKey().scope)
-										&& (x.getKey().name.equals(receiver)
-												|| x.getKey().componentType == ComponentType.Debugger)
-								&& x.getValue().encoder != null)).forEach(x -> {
+								.filter(
+									x -> (scope.startsWith(x.getKey().scope) && 
+										(x.getKey().name.equals(receiver) || x.getKey().componentType == ComponentType.Debugger) && 
+										x.getValue().encoder != null)).forEach(x -> {
+											
 									try {
 										// re-route this message to each
 										// qualified

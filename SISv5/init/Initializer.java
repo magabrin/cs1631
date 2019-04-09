@@ -80,13 +80,11 @@ public class Initializer {
 
             kvList = XMLUtil.generateKV(msg);
 
-            System.out.println("Registration Attempt: "
-                               + kvList.getValue("Name"));
+            System.out.println("Registration Attempt: " + kvList.getValue("Name"));
 
             encoder.sendMsg(kvList);
 
-            System.out.println("Registration Success: "
-                               + kvList.getValue("Name"));
+            System.out.println("Registration Success: " + kvList.getValue("Name"));
 
         } catch (JAXBException | IOException e) {
             // TODO Auto-generated catch block
