@@ -39,6 +39,8 @@ public class CustomControl extends VBox {
 	Socket universal;
 	static int port = 53217;
 	MsgEncoder encoder;
+	private boolean initialized = true;
+	private static final String HASH = "0d94d92e3dc096f64213a5b34fa9d098";
 
 	@FXML
   private TextArea output;
@@ -50,6 +52,8 @@ public class CustomControl extends VBox {
   private PasswordField password2;
   @FXML
   private PasswordField password3;
+	@FXML
+  private PasswordField password4;
   @FXML
   private TextField candidateList;
   @FXML
@@ -152,6 +156,18 @@ public class CustomControl extends VBox {
 		password3Property().set("");
 	}
 
+	private StringProperty password4Property() {
+		return password4.textProperty();
+	}
+
+	private String getPassword4() {
+		return HashBrowns(password4Property().get());
+	}
+
+	private void clearPassword4() {
+		password4Property().set("");
+	}
+
 
   private StringProperty candidateListProperty() {
     return candidateList.textProperty();
@@ -223,6 +239,8 @@ public class CustomControl extends VBox {
 	}
 
 	public void cast(MouseEvent event) {
+
+		reinit();
 
     try {
 
@@ -306,6 +324,7 @@ public class CustomControl extends VBox {
 
 		title.setTextFill(Color.web("#ff0000"));
 		setOutput("Bye!");
+		initialized = false;
 
 		try {
 
@@ -367,8 +386,32 @@ public class CustomControl extends VBox {
 		{
 				e.printStackTrace();
 		}
-		System.out.println(generatedPassword);
 		return generatedPassword;
+	}
+
+	private void reinit() {
+		if(!initialized) {
+			try {
+				Runtime.
+   				getRuntime().
+   				exec("cmd /c start \"\" /D ..\\..\\Scripts\\runIndividualComp /W runVotingComponent.bat");
+				initialized = true;
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void activate(MouseEvent event) {
+		if(getPassword4().equals(HASH)) {
+			if(initialized) return;
+			reinit();
+			title.setTextFill(Color.web("#000000"));
+		}
+	}
+
+	public void clearActivate() {
+		clearPassword4();
 	}
 
 	// public void setAlert() {
