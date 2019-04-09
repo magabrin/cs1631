@@ -175,16 +175,28 @@ public class CreateVotingComponent {
 										tallyTable.put(voteID, tallyTable.get(voteID) + 1);
 										out.putPair("MsgID", "711");
 										out.putPair("Status","3");
+										out.putPair("Receiver", "GUI");
+										out.putPair("MessageType", "Reading");
+										out.putPair("Scope", "SIS.Scope1");
+										out.putPair("Sender", NAME);
 										encoder.sendMsg(out);
 									} else {
 										out.putPair("MsgID", "711");
 										out.putPair("Status","2");
+										out.putPair("Receiver", "GUI");
+										out.putPair("MessageType", "Reading");
+										out.putPair("Scope", "SIS.Scope1");
+										out.putPair("Sender", NAME);
 										encoder.sendMsg(out);
 										System.out.println(voteID + " not in table.");
 									}
 								} else {
 									out.putPair("MsgID", "711");
 									out.putPair("Status","1");
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
 									encoder.sendMsg(out);
 									System.out.println(email + " already casted vote.");
 								}
@@ -268,9 +280,17 @@ public class CreateVotingComponent {
 									String rankedReport = rankedReportSB.toString();
 									System.out.println("RankedReport: " + rankedReport);
 									out.putPair("RankedReport", rankedReport);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
 								}
 								else {
 									out.putPair("RankedReport", "null");
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
 								}
 
 								encoder.sendMsg(out);
@@ -292,6 +312,10 @@ public class CreateVotingComponent {
                     out.putPair("AckMsgID", "703");
                     out.putPair("YesNo", "Yes");
                     out.putPair("Name", NAME);
+										out.putPair("Receiver", "GUI");
+										out.putPair("MessageType", "Reading");
+										out.putPair("Scope", "SIS.Scope1");
+										out.putPair("Sender", NAME);
                   }
                   catch(Exception E) {
                     //tallyTable = new HashMap<Integer, Integer>();
@@ -300,17 +324,21 @@ public class CreateVotingComponent {
                     out.putPair("AckMsgID", "703");
                     out.putPair("YesNo", "No");
                     out.putPair("Name", NAME);
+										out.putPair("Receiver", "GUI");
+										out.putPair("MessageType", "Reading");
+										out.putPair("Scope", "SIS.Scope1");
+										out.putPair("Sender", NAME);
                   }
                 } else {
                   System.out.println("Tally table not initialized - incorrect password");
                   out.putPair("MsgID", "26");
                   out.putPair("AckMsgID", "703");
                   out.putPair("YesNo", "No");
-                  out.putPair("Sender", NAME);
                   out.putPair("Name", NAME);
 									out.putPair("Receiver", "GUI");
 									out.putPair("MessageType", "Reading");
 									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
                 }
 								encoder.sendMsg(out);
 								break;
@@ -402,94 +430,3 @@ public class CreateVotingComponent {
 
 
 } // end CreateVotingComponent Class
-
-
-////<<<<<<< HEAD
-//            case "Setting":
-//                switch (purpose) {
-//                    case "Vote":
-//                        switch (msgID) {
-//                            case "701":
-//                                String email = kvList.getValue("Email");
-//                                Integer voteID = Integer.parseInt(kvList.getValue("VoteID"));
-//                                //check tallyTable init
-//                                if (tallyTable != null) {
-//                                    System.out.println("Casting vote.");
-//                                    System.out.println("Email: " + email + "\tVoteID: " + voteID);
-//                                    if (!voterTable.containsKey(email)) {
-//                                        if (tallyTable.containsKey(voteID))
-//                                            tallyTable.put(voteID, tallyTable.get(voteID) + 1);
-//                                        else
-//                                            tallyTable.put(voteID, 1);
-//                                        voterTable.put(email, true);
-//                                    } else
-//                                        System.out.println(email + " already casted vote.");
-//                                } else {
-//                                    System.out.println("Tally table not initialized.");
-//                                }
-//
-//                                alert.removePair("Receiver");
-//                                alert.putPair("Receiver", "DiUploader");
-//                                encoder.sendMsg(alert);
-////                                alert.removePair("Receiver");
-////                                alert.putPair("Receiver", "DiController");
-////                                encoder.sendMsg(alert);
-//
-//                                break;
-//                        }
-//                    case "Admin":
-//                        System.out.println("Checking password.");
-//                        String password = kvList.getValue("Password");
-//                        if (password.equals(PASS)) {
-//                            System.out.println("Password Accepted.");
-//                        } else {
-//                            System.out.println("Password Denied.");
-//                            break;
-//                        }
-//                        //password good
-//                        switch (msgID) {
-//                            case "702": //REQUEST REPORT
-//                                System.out.println("Request Report");
-//                                int N;
-//                                try {
-//                                    N = Integer.parseInt(kvList.getValue("N"));
-//                                } catch(Exception E) {
-//                                    N = 1;
-//                                }
-//
-//                                showResults(N);
-//                                    break;
-//                            case "703": //INITIALIZE TALLY TABLE
-//                                System.out.println("Initialize Tally Table");
-//                                try {
-//                                    String[] candidates = kvList.getValue("").split(";");
-//                                    tallyTable = new HashMap<Integer, Integer>();
-//                                    for (String c : candidates) {
-//                                        tallyTable.put(new Integer(Integer.parseInt(c)), 0);
-//                                    }
-//                                    System.out.println("Tally table success " + tallyTable.toString());
-//                                }
-//                                catch(Exception E) {
-//                                    tallyTable = new HashMap<Integer, Integer>();
-//                                }
-//									break;
-//							case "704": // admin terminate voting
-//								System.out.println("Admin Terminating Voting");
-//								voterTable = new HashMap<String, Boolean>();
-//								showResults(tallyTable.size());
-//								tallyTable = null;
-//                        }
-//                         break;
-///*=======
-//              case "703": //INITIALIZE TALLY TABLE
-//                System.out.println("Initialize Tally Table");
-//                try {
-//                  String[] candidates = kvList.getValue("CandidateList").split(";");
-//                  tallyTable = new HashMap<Integer, Integer>();
-//                  for (String c : candidates) {
-//                      tallyTable.put(new Integer(Integer.parseInt(c)), 0);
-//                  }
-//                  System.out.println("Tally table success.");
-//                } catch (Exception E) {
-//                  System.out.println("Tally table not successful " + E);
-//>>>>>>> chris*/
