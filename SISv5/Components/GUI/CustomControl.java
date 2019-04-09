@@ -31,6 +31,8 @@ import javafx.scene.text.Font;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class CustomControl extends VBox {
 
@@ -38,7 +40,8 @@ public class CustomControl extends VBox {
 	static int port = 53217;
 	MsgEncoder encoder;
 
-	//private final String SCOPE = "SIS.Scope1";
+	@FXML
+  private TextArea output;
 	@FXML
   private Label title;
   @FXML
@@ -77,90 +80,107 @@ public class CustomControl extends VBox {
 		}
 	}
 
-  public StringProperty emailProperty() {
+	private StringProperty emailProperty() {
     return email.textProperty();
   }
 
-  public String getEmail() {
+  private String getEmail() {
     return emailProperty().get();
   }
 
-  public StringProperty candidateProperty() {
+  private StringProperty candidateProperty() {
     return candidate.textProperty();
   }
 
-  public String getCandidate() {
+  private String getCandidate() {
     return candidateProperty().get();
   }
 
-  public StringProperty winnersProperty() {
+  private StringProperty winnersProperty() {
     return winners.textProperty();
   }
 
-  public String getWinners() {
+  private String getWinners() {
     return winnersProperty().get();
   }
 
-  public void clearEmail() {
+  private void clearEmail() {
     emailProperty().set("");
   }
 
-  public void clearCandidate() {
+  private void clearCandidate() {
     candidateProperty().set("");
   }
 
-  public void clearWinners() {
+  private void clearWinners() {
     winnersProperty().set("");
   }
 
-  public void clearPassword1() {
+  private void clearPassword1() {
     password1Property().set("");
   }
 
-  public StringProperty password1Property() {
+  private StringProperty password1Property() {
     return password1.textProperty();
   }
 
-  public String getPassword1() {
-    return password1Property().get();
+  private String getPassword1() {
+    return HashBrowns(password1Property().get());
   }
 
-	public StringProperty password2Property() {
+	private StringProperty password2Property() {
 		return password2.textProperty();
 	}
 
-	public String getPassword2() {
-		return password2Property().get();
+	private String getPassword2() {
+		return HashBrowns(password2Property().get());
 	}
 
-	public void clearPassword2() {
+	private void clearPassword2() {
 		password2Property().set("");
 	}
 
-	public StringProperty password3Property() {
+	private StringProperty password3Property() {
 		return password3.textProperty();
 	}
 
-	public String getPassword3() {
-		return password3Property().get();
+	private String getPassword3() {
+		return HashBrowns(password3Property().get());
 	}
 
-	public void clearPassword3() {
+	private void clearPassword3() {
 		password3Property().set("");
 	}
 
 
-  public StringProperty candidateListProperty() {
+  private StringProperty candidateListProperty() {
     return candidateList.textProperty();
   }
 
-  public String getCandidateList() {
+  private String getCandidateList() {
     return candidateListProperty().get();
   }
 
-  public void clearCandidateList() {
+  private void clearCandidateList() {
     candidateListProperty().set("");
   }
+
+	private StringProperty outputProperty() {
+		return output.textProperty();
+	}
+
+	private String getOutput() {
+		return outputProperty().get();
+	}
+
+	private void clearOutput() {
+		outputProperty().set("");
+	}
+
+	public void setOutput(String input) {
+		outputProperty().set(input);
+	}
+
 
   public void init(MouseEvent event) {
 
@@ -285,6 +305,7 @@ public class CustomControl extends VBox {
 	public void kill(MouseEvent event) {
 
 		title.setTextFill(Color.web("#ff0000"));
+		setOutput("Bye!");
 
 		try {
 
@@ -321,6 +342,33 @@ public class CustomControl extends VBox {
 
 	public void clearKill() {
 		clearPassword3();
+	}
+
+	private String HashBrowns(String passwordToHash) {
+		String generatedPassword = null;
+		try {
+				// Create MessageDigest instance for MD5
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				//Add password bytes to digest
+				md.update(passwordToHash.getBytes());
+				//Get the hash's bytes
+				byte[] bytes = md.digest();
+				//This bytes[] has bytes in decimal format;
+				//Convert it to hexadecimal format
+				StringBuilder sb = new StringBuilder();
+				for(int i=0; i< bytes.length ;i++)
+				{
+						sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+				}
+				//Get complete hashed password in hex format
+				generatedPassword = sb.toString();
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+				e.printStackTrace();
+		}
+		System.out.println(generatedPassword);
+		return generatedPassword;
 	}
 
 	// public void setAlert() {
