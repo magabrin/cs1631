@@ -367,7 +367,6 @@ public class CustomControl extends VBox {
 		{
 				e.printStackTrace();
 		}
-		System.out.println(generatedPassword);
 		return generatedPassword;
 	}
 
