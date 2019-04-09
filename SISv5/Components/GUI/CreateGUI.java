@@ -209,7 +209,6 @@ class MonitorTask implements Runnable {
 		case "Connect":
 			String name = kvList.getValue("Name");
 			String role = kvList.getValue("Role");
-			root.setOutput(kvList.toString());
 			if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
 				Platform.runLater(new Runnable() {
 					@Override
@@ -238,6 +237,7 @@ class MonitorTask implements Runnable {
 			break;
 		case "Confirm":
 			System.out.println("Connect to SISServer successful.");
+			root.setOutput(kvList.toString());
 			break;
 		}
 	}

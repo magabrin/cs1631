@@ -240,8 +240,6 @@ public class CustomControl extends VBox {
 
 	public void cast(MouseEvent event) {
 
-		reinit();
-
     try {
 
 			if (universal == null) {
@@ -322,8 +320,18 @@ public class CustomControl extends VBox {
 
 	public void kill(MouseEvent event) {
 
+		if(!initialized) {
+			setOutput("Error - Voting component already deactive.");
+			clearKill();
+			return;
+		} else if(!getPassword3().equals(HASH)) {
+			setOutput("Error - Incorrect password.");
+			clearKill();
+			return;
+		}
+		clearKill();
 		title.setTextFill(Color.web("#ff0000"));
-		setOutput("Bye!");
+		setOutput("Success - Voting Component Terminated.");
 		initialized = false;
 
 		try {
@@ -391,6 +399,7 @@ public class CustomControl extends VBox {
 
 	private void reinit() {
 		if(!initialized) {
+			setOutput("Success - Starting voting component.");
 			try {
 				Runtime.
    				getRuntime().
@@ -404,9 +413,20 @@ public class CustomControl extends VBox {
 
 	public void activate(MouseEvent event) {
 		if(getPassword4().equals(HASH)) {
-			if(initialized) return;
-			reinit();
-			title.setTextFill(Color.web("#000000"));
+			if(initialized) {
+				setOutput("Error - Voting component already active.");
+				clearActivate();
+				return;
+			} else {
+				clearActivate();
+				reinit();
+				title.setTextFill(Color.web("#000000"));
+			}
+		}
+		else {
+			setOutput("Error - Password not accepted.");
+			clearActivate();
+			return;
 		}
 	}
 

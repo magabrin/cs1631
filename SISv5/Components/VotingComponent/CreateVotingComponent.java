@@ -205,8 +205,14 @@ public class CreateVotingComponent {
 									System.out.println(email + " already casted vote.");
 								}
 							} else {
-								record.putPair("Status","2");
 								System.out.println("Tally table not initialized.");
+								out.putPair("MsgID", "711");
+								out.putPair("Status","2");
+								out.putPair("Receiver", "GUI");
+								out.putPair("MessageType", "Reading");
+								out.putPair("Scope", "SIS.Scope1");
+								out.putPair("Sender", NAME);
+								encoder.sendMsg(out);
 							}
 						}
 						break;
@@ -242,13 +248,29 @@ public class CreateVotingComponent {
 								}
 								if (tallyTable == null) {
 									System.out.println("Tally table not initialized.");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Status", "Error");
+									break;
 								}
 								if(tallyTable.size() == 0) {
 									System.out.println("No votes cast.");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Status", "Error");
 									break;
 								}
 								else if(N < 0 || N >= tallyTable.size()) {
 									System.out.println("Invalid size for 'N'.");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Status", "Success");
 									break;
 								}
 
@@ -348,27 +370,41 @@ public class CreateVotingComponent {
 								encoder.sendMsg(out);
 								break;
 
-							case "704": // admin terminate voting
-								try{
-									showResults(tallyTable.size());
-									System.out.println("Admin Terminating Voting");
-
-									// Reset Voter table and show results of all voting
-									voterTable = new HashMap<String, Boolean>();
-									tallyTable = null;
-									break;
-								} catch(Exception e){
-									System.out.println("error while terminating");
-									break;
-								}
+							// case "704": // admin terminate voting
+							// 	try{
+							// 		showResults(tallyTable.size());
+							// 		System.out.println("Admin Terminating Voting");
+							//
+							// 		// Reset Voter table and show results of all voting
+							// 		voterTable = new HashMap<String, Boolean>();
+							// 		tallyTable = null;
+							// 		break;
+							// 	} catch(Exception e){
+							// 		System.out.println("error while terminating");
+							// 		break;
+							// 	}
 
 							case "22":	// KILL
-								voterTable = new HashMap<String, Boolean>();
-								tallyTable = null;
-								System.out.println("killing...");
-								System.exit(0);
-								break;
-
+								if(passwordAccepted) {
+									voterTable = new HashMap<String, Boolean>();
+									tallyTable = null;
+									System.out.println("killing...");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Status", "Success");
+									encoder.sendMsg(out);
+									System.exit(0);
+									break;
+								} else {
+									System.out.println("Kill error - password not accepted.");
+									out.putPair("Scope", "SIS.Scope1");
+									out.putPair("Sender", NAME);
+									out.putPair("Receiver", "GUI");
+									out.putPair("MessageType", "Reading");
+									out.putPair("Status", "Error");
+								}
 						} // end switch msgID
 						break;
 				} // end switch purpose
