@@ -1,5 +1,4 @@
-- finish other methods besides tally init
 - display data to gui
+- gui testing script
 - fix initialize/ kill voting component
 - encrypt passwords
-- gui testing script

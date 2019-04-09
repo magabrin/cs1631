@@ -22,7 +22,8 @@ public class CreateGUI extends Application {
 	private ObservableMap<String, KeyValueList> map = FXCollections
 			.observableHashMap();
 
-	private Proc pro = new Proc(map);
+	CustomControl root = new CustomControl();
+	private Proc pro = new Proc(map, root);
 
 	public static final String SCOPE = "SIS.Scope1";
 	// name of this component
@@ -33,7 +34,6 @@ public class CreateGUI extends Application {
 		try {
 			//SISFlow root = new SISFlow(map);
 			//ScrollPane root = new ScrollPane();
-			CustomControl root = new CustomControl();
 			Scene scene = new Scene(root);
 
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -108,10 +108,13 @@ class MonitorTask implements Runnable {
 	private static final List<String> TYPES = new ArrayList<String>(
 			Arrays.asList(new String[]{"Setting", "Confirm"}));
 
+	private static CustomControl root;
+
 	private ObservableMap<String, KeyValueList> map;
 
-	public MonitorTask(ObservableMap<String, KeyValueList> m) {
+	public MonitorTask(ObservableMap<String, KeyValueList> m, CustomControl r) {
 		map = m;
+		root = r;
 	}
 
 	public void terminate() {
@@ -156,7 +159,7 @@ class MonitorTask implements Runnable {
 				// details
 
 				while (running) {
-					ProcessMsg(decoder.getMsg());
+					ProcessMsg(decoder.getMsg(), root);
 				}
 
 			} catch (Exception e) {
@@ -186,11 +189,7 @@ class MonitorTask implements Runnable {
 		return socket;
 	}
 
-	private void ProcessMsg(KeyValueList kvList) throws Exception {
-
-		//System.out.println("entering");
-
-		//System.out.println(kvList.toString());
+	private void ProcessMsg(KeyValueList kvList, CustomControl root) throws Exception {
 
 		String scope = kvList.getValue("Scope");
 		if (!CreateGUI.SCOPE.startsWith(scope)) {
@@ -210,6 +209,7 @@ class MonitorTask implements Runnable {
 		case "Connect":
 			String name = kvList.getValue("Name");
 			String role = kvList.getValue("Role");
+			root.setOutput(kvList.toString());
 			if (!name.equals(CreateGUI.NAME)&&!role.equals("Monitor")) {
 				Platform.runLater(new Runnable() {
 					@Override
@@ -224,7 +224,7 @@ class MonitorTask implements Runnable {
 		case "Alert":
 		case "Reading":
 
-			System.out.println(kvList.toString());
+			root.setOutput(kvList.toString());
 
 			Platform.runLater(new Runnable() {
 				@Override
@@ -249,8 +249,8 @@ class Proc {
 
 	private MonitorTask monitorTask;
 
-	public Proc(ObservableMap<String, KeyValueList> m) {
-		monitorTask = new MonitorTask(m);
+	public Proc(ObservableMap<String, KeyValueList> m, CustomControl root) {
+		monitorTask = new MonitorTask(m, root);
 		thread = new Thread(monitorTask);
 		thread.start();
 	}

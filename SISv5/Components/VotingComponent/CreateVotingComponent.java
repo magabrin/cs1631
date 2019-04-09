@@ -11,6 +11,9 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.lang.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class CreateVotingComponent {
 
@@ -22,12 +25,13 @@ public class CreateVotingComponent {
 	// message reader
 	private static MsgDecoder decoder;
 
+	private static final String HASH = "0d94d92e3dc096f64213a5b34fa9d098";
+
 	// scope of this component
 	private static final String SCOPE = "SIS.Scope1";
 	// name of this component
 	private static final String NAME = "VotingComponent";
-	// secure admin password
-	private static final String PASS = "ironman";
+
 	// messages types that can be handled by this component
 	private static final List<String> TYPES = new ArrayList<String>(
 			Arrays.asList(new String[]{"Setting", "Confirm"}));
@@ -215,7 +219,8 @@ public class CreateVotingComponent {
 
 						// For any admin functionality, password must be valid, if not break
 						String password = kvList.getValue("Password");
-						if (password.equals(PASS)) {
+
+						if (HashBrowns(password).equals(HASH)) {
 							System.out.println("Password Accepted.");
 						} else {
 							System.out.println("Password Denied.");
@@ -426,6 +431,33 @@ public class CreateVotingComponent {
 		// 		}
 		// 	}
 		// }
+	}
+
+	private static String HashBrowns(String passwordToHash) {
+		String generatedPassword = null;
+		try {
+				// Create MessageDigest instance for MD5
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				//Add password bytes to digest
+				md.update(passwordToHash.getBytes());
+				//Get the hash's bytes
+				byte[] bytes = md.digest();
+				//This bytes[] has bytes in decimal format;
+				//Convert it to hexadecimal format
+				StringBuilder sb = new StringBuilder();
+				for(int i=0; i< bytes.length ;i++)
+				{
+						sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+				}
+				//Get complete hashed password in hex format
+				generatedPassword = sb.toString();
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+				e.printStackTrace();
+		}
+		System.out.println(generatedPassword);
+		return generatedPassword;
 	}
 
 
