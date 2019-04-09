@@ -1,4 +1,4 @@
-- send data back to gui
+- finish other methods besides tally init
 - display data to gui
 - fix initialize/ kill voting component
 - encrypt passwords

@@ -180,7 +180,7 @@ class MonitorTask implements Runnable {
 
 	private void ProcessMsg(KeyValueList kvList) throws Exception {
 
-		System.out.println("entering");
+		//System.out.println("entering");
 
 		//System.out.println(kvList.toString());
 

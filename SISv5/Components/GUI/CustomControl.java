@@ -123,6 +123,31 @@ public class CustomControl extends VBox {
     return password1Property().get();
   }
 
+	public StringProperty password2Property() {
+		return password2.textProperty();
+	}
+
+	public String getPassword2() {
+		return password2Property().get();
+	}
+
+	public void clearPassword2() {
+		password2Property().set("");
+	}
+
+	public StringProperty password3Property() {
+		return password3.textProperty();
+	}
+
+	public String getPassword3() {
+		return password3Property().get();
+	}
+
+	public void clearPassword3() {
+		password3Property().set("");
+	}
+
+
   public StringProperty candidateListProperty() {
     return candidateList.textProperty();
   }
@@ -137,13 +162,45 @@ public class CustomControl extends VBox {
 
   public void init(MouseEvent event) {
 
-    System.out.println(getPassword1());
-    System.out.println(getCandidateList());
+    try {
 
-    clearPassword1();
-    clearCandidateList();
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
 
-    //System.out.println(getPassword1());
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", CreateGUI.SCOPE);
+		  init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", CreateGUI.NAME);
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Admin");
+      init_kvl.putPair("Password", getPassword1());
+			init_kvl.putPair("CandidateList", getCandidateList());
+			init_kvl.putPair("msgID", "703");
+
+			encoder.sendMsg(init_kvl);
+			clearInit();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearInit();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearInit();
+		}
+
+	}
+
+	public void clearInit() {
+		clearPassword1();
+		clearCandidateList();
+	}
+
+	public void cast(MouseEvent event) {
 
     try {
 
@@ -157,42 +214,110 @@ public class CustomControl extends VBox {
 			KeyValueList init_kvl = new KeyValueList();
 			init_kvl.putPair("Scope", CreateGUI.SCOPE);
 		  init_kvl.putPair("MessageType", "Setting");
-			init_kvl.putPair("Sender", "SISServer");
+			init_kvl.putPair("Sender", CreateGUI.NAME);
 			init_kvl.putPair("Receiver", "VotingComponent");
-			init_kvl.putPair("Purpose", "Admin");
-      init_kvl.putPair("Password", getPassword1());
-      init_kvl.putPair("msgID", "703");
-      init_kvl.putPair("CandidateList", getCandidateList());
+			init_kvl.putPair("Purpose", "Vote");
+			init_kvl.putPair("Email", getEmail());
+			init_kvl.putPair("VoteID", getCandidate());
+      init_kvl.putPair("msgID", "701");
 
 			encoder.sendMsg(init_kvl);
-
+			clearCast();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			clearCast();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			clearCast();
 		}
 
 	}
 
-  public void cast(MouseEvent event) {
+	public void clearCast() {
+		clearCandidate();
+		clearEmail();
+	}
 
-    System.out.println("cast");
+	public void request(MouseEvent event) {
 
-  }
+		try {
 
-  public void request(MouseEvent event) {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
 
-    System.out.println("request");
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", CreateGUI.SCOPE);
+			init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", CreateGUI.NAME);
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Admin");
+			init_kvl.putPair("Password", getPassword2());
+			init_kvl.putPair("N", getWinners());
+			init_kvl.putPair("msgID", "702");
 
-  }
+			encoder.sendMsg(init_kvl);
+			clearRequest();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearRequest();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearRequest();
+		}
 
-  public void kill(MouseEvent event) {
+	}
 
-    System.out.println("kill");
+	public void clearRequest() {
+		clearPassword2();
+		clearWinners();
+	}
 
-  }
+	public void kill(MouseEvent event) {
+
+		try {
+
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", CreateGUI.SCOPE);
+			init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", CreateGUI.NAME);
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Admin");
+			init_kvl.putPair("Password", getPassword3());
+			init_kvl.putPair("Name", "Kill");
+			init_kvl.putPair("msgID", "22");
+
+			encoder.sendMsg(init_kvl);
+			clearRequest();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearRequest();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearRequest();
+		}
+
+	}
+
+	public void clearKill() {
+		clearPassword3();
+	}
 
 	// public void setAlert() {
 	// 	title.setTextFill(Color.RED);
