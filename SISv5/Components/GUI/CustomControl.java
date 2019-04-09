@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
@@ -38,7 +39,8 @@ public class CustomControl extends VBox {
 	MsgEncoder encoder;
 
 	//private final String SCOPE = "SIS.Scope1";
-
+	@FXML
+  private Label title;
   @FXML
   private PasswordField password1;
   @FXML
@@ -281,6 +283,8 @@ public class CustomControl extends VBox {
 	}
 
 	public void kill(MouseEvent event) {
+
+		title.setTextFill(Color.web("#ff0000"));
 
 		try {
 
