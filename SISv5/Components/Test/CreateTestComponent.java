@@ -191,7 +191,7 @@ public class CreateTestComponent
 			init_kvl.putPair("Sender", "Test");
 			init_kvl.putPair("Receiver", "VotingComponent");
 			init_kvl.putPair("Purpose", "Admin");
-            init_kvl.putPair("Password", "ironman");
+            init_kvl.putPair("Password", "treeHugger");
 			init_kvl.putPair("CandidateList", "1;2;3;4;5");
 			init_kvl.putPair("msgID", "703");
             encoder.sendMsg(init_kvl);
