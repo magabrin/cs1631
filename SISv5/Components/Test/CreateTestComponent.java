@@ -72,8 +72,24 @@ public class CreateTestComponent
 
                 initRecord();
 
-                testInitSuccess(universal, encoder, decoder);
+                KeyValueList kvList = new KeyValueList();
+                while (true) {
+                    kvList = decoder.getMsg();
+                    String messType = kvList.getValue("MessageType");   
+                    if (messType.equals("Connect")) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+
                 testInitFail(universal, encoder, decoder);
+                testInitSuccess(universal, encoder, decoder);                
+                testVoteSuccess(universal, encoder, decoder);
+                testVoteFailDuplicateEmail(universal, encoder, decoder);
+                testVoteFailInvalidVote(universal, encoder, decoder);
+                testShowstatusSuccess(universal, encoder, decoder);
+                testShowstatusFailWrongPassword(universal, encoder, decoder);
                 break;
             }
             catch (Exception e)
@@ -100,18 +116,19 @@ public class CreateTestComponent
         }
     }
 
+
+
     private static void testInitSuccess(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
         // KeyValueList for inward messages, see KeyValueList for details
         KeyValueList kvList;
         try {
-
 			if (universal == null) {
 				universal = new Socket("127.0.0.1", port);
 			}
 			if (encoder == null) {
 				encoder = new MsgEncoder(universal.getOutputStream());
 			}
-
 			KeyValueList init_kvl = new KeyValueList();
 			init_kvl.putPair("Scope", "SIS.Scope1");
 		    init_kvl.putPair("MessageType", "Setting");
@@ -122,33 +139,38 @@ public class CreateTestComponent
 			init_kvl.putPair("CandidateList", "1;2;3;4;5");
 			init_kvl.putPair("msgID", "703");
             encoder.sendMsg(init_kvl);
-            
-			// clearInit();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// clearInit();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// clearInit();
         }
         boolean go = true;
         while (go)
         {
             // attempt to read and decode a message, see MsgDecoder for details
             kvList = decoder.getMsg();
-            // process that message
-            boolean result = ProcessTestInitSuccess(kvList);
-            if (result) {
-                System.out.println("Breaking...");
-                go = false;
-                break;
+            String messType = kvList.getValue("MessageType");
+            // if (messType.equals("Confirm") || messType.equals("Connect")) {
+            //     continue;
+            // }
+            if (kvList != null) {
+                System.out.println(messType);
             }
-            
+
+            if (messType.equals("Reading")) {
+                // process that message
+                // System.out.println("got a reading message...");
+                boolean result = ProcessTestInitSuccess(kvList);
+                if (result) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
         }
     }
-
     private static boolean ProcessTestInitSuccess(KeyValueList kvList) {
         if (kvList != null) {
             String id = kvList.getValue("MsgID");
@@ -158,33 +180,42 @@ public class CreateTestComponent
             String rec = kvList.getValue("Receiver");
             String messType = kvList.getValue("MessageType");
             String scope = kvList.getValue("Scope");
-            String sender = kvList.getValue("Sender");
-    
+            String sender = kvList.getValue("Sender");                
+            // Sender : VotingComponent
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // AckMsgID : 703
+            // YesNo : No
+            // MsgID : 26
+            // MessageType : Reading
+            // Name : VotingComponent
             System.out.println("processTestinitSuccess kvList " + kvList.toString());
 
-            if (id.equals("26") && ack.equals("703") && yesno.equals("Yes") && name.equals("VotingComponent") && rec.equals("GUI") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") ) {
-                System.out.println("Test Init Success PASS");
-            }
-            System.out.println("Test Init Success FAIL");
+            if (id.equals("26") && ack.equals("703") && yesno.equals("Yes") && name.equals("VotingComponent") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") ) {
+                System.out.println("Test Init Success ******** PASS ********");
+            } else {
+                System.out.println("Test Init Success ******** FAIL ********");
+            }            
         }
         
-
         return true;
     }
 
 
+
+
+
     private static void testInitFail(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("Starting testInitFail");
         // KeyValueList for inward messages, see KeyValueList for details
         KeyValueList kvList;
         try {
-
 			if (universal == null) {
 				universal = new Socket("127.0.0.1", port);
 			}
 			if (encoder == null) {
 				encoder = new MsgEncoder(universal.getOutputStream());
 			}
-
 			KeyValueList init_kvl = new KeyValueList();
 			init_kvl.putPair("Scope", "SIS.Scope1");
 		    init_kvl.putPair("MessageType", "Setting");
@@ -195,16 +226,12 @@ public class CreateTestComponent
 			init_kvl.putPair("CandidateList", "1;2;3;4;5");
 			init_kvl.putPair("msgID", "703");
             encoder.sendMsg(init_kvl);
-            
-			// clearInit();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// clearInit();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// clearInit();
         }
         boolean go = true;
         while (go)
@@ -214,14 +241,13 @@ public class CreateTestComponent
             // process that message
             boolean result = ProcessTestInitFail(kvList);
             if (result) {
-                System.out.println("Breaking...");
+                // System.out.println("Breaking...");
                 go = false;
                 break;
             }
             
         }
     }
-
     private static boolean ProcessTestInitFail(KeyValueList kvList) {
         if (kvList != null) {
             String id = kvList.getValue("MsgID");
@@ -235,15 +261,400 @@ public class CreateTestComponent
     
             System.out.println("processTestIniitFail kvList: " + kvList.toString());
 
-            if (id.equals("26") && ack.equals("703") && yesno.equals("No") && name.equals("VotingComponent") && rec.equals("GUI") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") ) {
-                System.out.println("Test Init fail PASS");
-            }
-            System.out.println("Test Init fail FAIL");
-        }
-        
-
+            if (id.equals("26") && ack.equals("703") && yesno.equals("No") && name.equals("VotingComponent") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") ) {
+                System.out.println("Test Init fail ******** PASS ********");
+            } else {
+                System.out.println("Test Init fail ******** FAIL ********");
+            }            
+        }        
         return true;
     }
+
+
+
+
+    private static void testVoteSuccess(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
+        // KeyValueList for inward messages, see KeyValueList for details
+        KeyValueList kvList;
+        try {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", "SIS.Scope1");
+		    init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", "Test");
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Vote");
+            init_kvl.putPair("email", "mag313@pitt.edu");
+			init_kvl.putPair("VoteID", "1");
+			init_kvl.putPair("msgID", "701");
+            encoder.sendMsg(init_kvl);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        boolean go = true;
+        while (go)
+        {
+            // attempt to read and decode a message, see MsgDecoder for details
+            kvList = decoder.getMsg();
+            String messType = kvList.getValue("MessageType");
+            
+            if (kvList != null) { System.out.println(messType); }
+
+            if (messType.equals("Reading")) {
+                if (ProcessTestVoteSuccess(kvList)) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
+        }
+    }
+    private static boolean ProcessTestVoteSuccess(KeyValueList kvList) {
+        if (kvList != null) {
+            String id = kvList.getValue("MsgID");
+            String status = kvList.getValue("Status");
+            String rec = kvList.getValue("Receiver");
+            String messType = kvList.getValue("MessageType");
+            String scope = kvList.getValue("Scope");
+            String sender = kvList.getValue("Sender");                
+            // Status : 3
+            // Sender : VotingComponent
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // MsgID : 711
+            // MessageType : Reading
+            System.out.println("ProcessTestVoteSuccess kvList " + kvList.toString());
+
+            if (id.equals("711") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") && status.equals("3")) {
+                System.out.println("Test Vote Success ******** PASS ********");
+            } else {
+                System.out.println("Test Vote Success ******** FAIL ********");
+            }            
+        }        
+        return true;
+    }
+
+
+
+
+
+    private static void testVoteFailDuplicateEmail(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
+        // KeyValueList for inward messages, see KeyValueList for details
+        KeyValueList kvList;
+        try {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", "SIS.Scope1");
+		    init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", "Test");
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Vote");
+            init_kvl.putPair("email", "mag313@pitt.edu");
+			init_kvl.putPair("VoteID", "1");
+			init_kvl.putPair("msgID", "701");
+            encoder.sendMsg(init_kvl);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        boolean go = true;
+        while (go)
+        {
+            // attempt to read and decode a message, see MsgDecoder for details
+            kvList = decoder.getMsg();
+            String messType = kvList.getValue("MessageType");
+            
+            if (kvList != null) { System.out.println(messType); }
+
+            if (messType.equals("Reading")) {
+                if (ProcessTestVoteFailDuplicateEmail(kvList)) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
+        }
+    }
+    private static boolean ProcessTestVoteFailDuplicateEmail(KeyValueList kvList) {
+        if (kvList != null) {
+            String id = kvList.getValue("MsgID");
+            String status = kvList.getValue("Status");
+            String rec = kvList.getValue("Receiver");
+            String messType = kvList.getValue("MessageType");
+            String scope = kvList.getValue("Scope");
+            String sender = kvList.getValue("Sender");                
+            // Status : 1
+            // Sender : VotingComponent
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // MsgID : 711
+            // MessageType : Reading
+
+            System.out.println("ProcessTestVoteFailDuplicateEmail kvList " + kvList.toString());
+
+            if (id.equals("711") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") && status.equals("1")) {
+                System.out.println("Test Vote Fail Duplicate Email ******** PASS ********");
+            } else {
+                System.out.println("Test Vote Fail Duplicate Email ******** FAIL ********");
+            }            
+        }        
+        return true;
+    }
+
+
+
+
+
+    
+    private static void testVoteFailInvalidVote(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
+        // KeyValueList for inward messages, see KeyValueList for details
+        KeyValueList kvList;
+        try {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", "SIS.Scope1");
+		    init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", "Test");
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Vote");
+            init_kvl.putPair("email", "new email");
+			init_kvl.putPair("VoteID", "9");
+			init_kvl.putPair("msgID", "701");
+            encoder.sendMsg(init_kvl);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        boolean go = true;
+        while (go)
+        {
+            // attempt to read and decode a message, see MsgDecoder for details
+            kvList = decoder.getMsg();
+            String messType = kvList.getValue("MessageType");
+            
+            if (kvList != null) { System.out.println(messType); }
+
+            if (messType.equals("Reading")) {
+                if (ProcessTestVoteFailInvalidVote(kvList)) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
+        }
+    }
+    private static boolean ProcessTestVoteFailInvalidVote(KeyValueList kvList) {
+        if (kvList != null) {
+            String id = kvList.getValue("MsgID");
+            String status = kvList.getValue("Status");
+            String rec = kvList.getValue("Receiver");
+            String messType = kvList.getValue("MessageType");
+            String scope = kvList.getValue("Scope");
+            String sender = kvList.getValue("Sender");                
+            // Status : 2
+            // Sender : VotingComponent
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // MsgID : 711
+            // MessageType : Reading
+
+            System.out.println("ProcessTestVoteFailInvalidVote kvList " + kvList.toString());
+
+            if (id.equals("711") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") && status.equals("2")) {
+                System.out.println("Test Vote Fail Invalid Vote ******** PASS ********");
+            } else {
+                System.out.println("Test Vote Fail Invalid Vote ******** FAIL ********");
+            }            
+        }        
+        return true;
+    }
+
+
+
+
+
+
+    
+    private static void testShowstatusSuccess(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
+        // KeyValueList for inward messages, see KeyValueList for details
+        KeyValueList kvList;
+        try {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", "SIS.Scope1");
+		    init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", "Test");
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Admin");
+            init_kvl.putPair("Password", "ironman");
+			init_kvl.putPair("N", "1");
+			init_kvl.putPair("msgID", "702");
+            encoder.sendMsg(init_kvl);
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        boolean go = true;
+        while (go)
+        {
+            // attempt to read and decode a message, see MsgDecoder for details
+            kvList = decoder.getMsg();
+            String messType = kvList.getValue("MessageType");
+            
+            if (kvList != null) { System.out.println(messType); }
+
+            if (messType.equals("Reading")) {
+                if (ProcessTestShowStatusSuccess(kvList)) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
+        }
+    }
+    private static boolean ProcessTestShowStatusSuccess(KeyValueList kvList) {
+        if (kvList != null) {
+            String id = kvList.getValue("MsgID");
+            String rankedReport = kvList.getValue("RankedReport");
+            String rec = kvList.getValue("Receiver");
+            String messType = kvList.getValue("MessageType");
+            String scope = kvList.getValue("Scope");
+            String sender = kvList.getValue("Sender");                
+            // Sender : VotingComponent
+            // RankedReport: 1,2
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // MsgID : 712
+            // MessageType : Reading
+
+            System.out.println("ProcessTestVoteFailInvalidVote kvList " + kvList.toString());
+
+            if (id.equals("712") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") && rankedReport.equals("1,1")) {
+                System.out.println("Test Vote Fail Invalid Vote ******** PASS ********");
+            } else {
+                System.out.println("Test Vote Fail Invalid Vote ******** FAIL ********");
+            }            
+        }        
+        return true;
+    }
+
+
+
+
+
+
+    private static void testShowstatusFailWrongPassword(Socket universal, MsgEncoder encoder, MsgDecoder decoder) throws Exception {
+        // System.out.println("starting testInitSuccess");
+        // KeyValueList for inward messages, see KeyValueList for details
+        KeyValueList kvList;
+        try {
+			if (universal == null) {
+				universal = new Socket("127.0.0.1", port);
+			}
+			if (encoder == null) {
+				encoder = new MsgEncoder(universal.getOutputStream());
+			}
+			KeyValueList init_kvl = new KeyValueList();
+			init_kvl.putPair("Scope", "SIS.Scope1");
+		    init_kvl.putPair("MessageType", "Setting");
+			init_kvl.putPair("Sender", "Test");
+			init_kvl.putPair("Receiver", "VotingComponent");
+			init_kvl.putPair("Purpose", "Admin");
+            init_kvl.putPair("Password", "treeHugger");
+			init_kvl.putPair("N", "1");
+			init_kvl.putPair("msgID", "702");
+            encoder.sendMsg(init_kvl);
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        boolean go = true;
+        while (go)
+        {
+            // attempt to read and decode a message, see MsgDecoder for details
+            kvList = decoder.getMsg();
+            String messType = kvList.getValue("MessageType");
+            
+            if (kvList != null) { System.out.println(messType); }
+
+            if (messType.equals("Reading")) {
+                if (ProcessTestShowStatusFailWrongPassword(kvList)) {
+                    // System.out.println("Breaking...");
+                    go = false;
+                    break;
+                }
+            }                        
+        }
+    }
+    private static boolean ProcessTestShowStatusFailWrongPassword(KeyValueList kvList) {
+        if (kvList != null) {
+            String id = kvList.getValue("MsgID");
+            String rankedReport = kvList.getValue("RankedReport");
+            String rec = kvList.getValue("Receiver");
+            String messType = kvList.getValue("MessageType");
+            String scope = kvList.getValue("Scope");
+            String sender = kvList.getValue("Sender");                
+            // Sender : VotingComponent
+            // RankedReport: 1,2
+            // Scope : SIS.Scope1
+            // Receiver : GUI
+            // MsgID : 712
+            // MessageType : Reading
+
+            System.out.println("ProcessTestVoteFailInvalidVote kvList " + kvList.toString());
+
+            if (id.equals("712") && rec.equals("Test") && messType.equals("Reading") && scope.equals("SIS.Scope1") && sender.equals("VotingComponent") && rankedReport.equals("null")) {
+                System.out.println("Test Vote Fail Invalid Vote ******** PASS ********");
+            } else {
+                System.out.println("Test Vote Fail Invalid Vote ******** FAIL ********");
+            }            
+        }        
+        return true;
+    }
+
+
 
 
     /*
