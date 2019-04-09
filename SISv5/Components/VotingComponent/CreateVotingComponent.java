@@ -184,6 +184,9 @@ public class CreateVotingComponent {
 										out.putPair("Scope", "SIS.Scope1");
 										out.putPair("Sender", NAME);
 										encoder.sendMsg(out);
+										out.removePair("Receiver");
+										out.putPair("Receiver", "Test");
+										encoder.sendMsg(out);
 									} else {
 										out.putPair("MsgID", "711");
 										out.putPair("Status","2");
@@ -191,6 +194,9 @@ public class CreateVotingComponent {
 										out.putPair("MessageType", "Reading");
 										out.putPair("Scope", "SIS.Scope1");
 										out.putPair("Sender", NAME);
+										encoder.sendMsg(out);
+										out.removePair("Receiver");;
+										out.putPair("Receiver", "Test");
 										encoder.sendMsg(out);
 										System.out.println(voteID + " not in table.");
 									}
@@ -201,6 +207,9 @@ public class CreateVotingComponent {
 									out.putPair("MessageType", "Reading");
 									out.putPair("Scope", "SIS.Scope1");
 									out.putPair("Sender", NAME);
+									encoder.sendMsg(out);
+									out.removePair("Receiver");;
+									out.putPair("Receiver", "Test");
 									encoder.sendMsg(out);
 									System.out.println(email + " already casted vote.");
 								}
@@ -321,6 +330,9 @@ public class CreateVotingComponent {
 								}
 
 								encoder.sendMsg(out);
+								out.removePair("Receiver");;
+								out.putPair("Receiver", "Test");
+								encoder.sendMsg(out);
 
 								break;
 
@@ -367,6 +379,9 @@ public class CreateVotingComponent {
 									out.putPair("Scope", "SIS.Scope1");
 									out.putPair("Sender", NAME);
                 }
+								encoder.sendMsg(out);
+								out.removePair("Receiver");;
+								out.putPair("Receiver", "Test");
 								encoder.sendMsg(out);
 								break;
 
