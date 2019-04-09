@@ -15,6 +15,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
+import java.awt.*;
 
 public class CreateGUI extends Application {
 
@@ -34,6 +35,13 @@ public class CreateGUI extends Application {
 			//ScrollPane root = new ScrollPane();
 			CustomControl root = new CustomControl();
 			Scene scene = new Scene(root);
+
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+			 primaryStage.setX(0);
+			 primaryStage.setY(0);
+			 primaryStage.setWidth(screenSize.getWidth());
+			 primaryStage.setHeight(screenSize.getHeight());
 
 			// scene.getStylesheets().add(
 			// getClass().getResource("application.css").toExternalForm());
@@ -180,7 +188,7 @@ class MonitorTask implements Runnable {
 
 	private void ProcessMsg(KeyValueList kvList) throws Exception {
 
-		System.out.println("entering");
+		//System.out.println("entering");
 
 		//System.out.println(kvList.toString());
 
