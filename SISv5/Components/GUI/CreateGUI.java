@@ -40,8 +40,8 @@ public class CreateGUI extends Application {
 
 			 primaryStage.setX(0);
 			 primaryStage.setY(0);
-			 primaryStage.setWidth(screenSize.getWidth());
-			 primaryStage.setHeight(screenSize.getHeight());
+//			 primaryStage.setWidth(screenSize.getWidth());
+//			 primaryStage.setHeight(screenSize.getHeight());
 
 			// scene.getStylesheets().add(
 			// getClass().getResource("application.css").toExternalForm());
